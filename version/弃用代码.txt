@@ -1,0 +1,91 @@
+/*
+        char ch = getch();
+        if (ch == 'w' || ch == 'W')
+        {
+            index--;
+            if (index < 0)
+            {
+                index = 2;
+            }
+            reinport();
+            clrscr();
+            continue;
+        }
+        if (ch == 's' ||ch == 'S')
+        {
+            index++;
+            if (index > 2)
+            {
+                index = 0;
+            }
+            reinport();
+            clrscr();
+            continue;
+        }  
+        if (ch == 'e' || ch == 'E')
+        {
+            switch (index)
+            {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                return;
+            default:
+                break;
+            }
+        }
+        */
+
+
+while (1)
+        {
+            if (inport(PK_UP))
+            {
+                for (int i = 0; i < MAX_MAP; i++)
+                {
+                    if (player.x == map[i].x && player.y - 5 == map[i].y)
+                    {
+                        player.y -= 5;
+                        mapsPaint(map[i]);
+                    }
+                }
+            }
+
+            if (inport(PK_DOWN))
+            {
+                for (int i = 0; i < MAX_MAP; i++)
+                {
+                    if (player.x == map[i].x && player.y + 5 == map[i].y)
+                    {
+                        player.y += 5;
+                        mapsPaint(map[i]);
+                    }
+                }
+            }
+
+            if (inport(PK_LEFT))
+            {
+                for (int i = 0; i < MAX_MAP; i++)
+                {
+                    if (player.x - 10 == map[i].x && player.y == map[i].y)
+                    {
+                        player.x -= 10;
+                        mapsPaint(map[i]);
+                    }
+                }
+            }
+
+            if (inport(PK_RIGHT))
+            {
+                for (int i = 0; i < MAX_MAP; i++)
+                {
+                    if (player.x + 10 == map[i].x && player.y == map[i].y)
+                    {
+                        player.x += 10;
+                        mapsPaint(map[i]);
+                    }
+                }
+            }
+        }
