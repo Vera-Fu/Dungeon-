@@ -355,6 +355,10 @@ void runGame() {
 
 //プレイヤーの入力を読み出し
 void moveMent(PLAYER* player, MAPS* map) {
+    char bgm[] = "The Kingdom.mp3";
+    int BGM = opensound(bgm);
+    playsound(BGM, 1);
+
     gotoxy(player->x, player->y);
     printf("♀");    
     gotoxy(25, 2);
@@ -1282,7 +1286,7 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
                     return;
                 case 2:
                     srand(time(NULL));
-                    g = rand() % 20 + 5;
+                    g = rand() % 15 + 5;
                     player->gold += g;
                     gotoxy(60, 27);
                     printf("%d Gを入手した！ENTERを押してください...",g);
@@ -1546,7 +1550,7 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
         if (enemy->hp == 0)
         {
             srand(time(NULL));
-            int g = rand() % 30 + 10;
+            int g = rand() % 15 + 5;
             player->gold += g;
             clrscr();
             while (1)
