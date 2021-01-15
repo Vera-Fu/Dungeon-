@@ -2110,9 +2110,9 @@ void charaInput(STATUS* status) {
         seedNum *= 111;
         (status + G_status)->hp = seedNum % 200 + 100;
         (status + G_status)->atk = (seedNum / 7) % 66 + 25;
-        (status + G_status)->def = (seedNum / 3) % 30 + 10;
+        (status + G_status)->def = (seedNum / 3) % 35 + 5;
         (status + G_status)->spd = (seedNum / 4) % 10;
-        (status + G_status)->eva = (seedNum / 5) % 40;
+        (status + G_status)->eva = (seedNum / 9) % 40;
         (status + G_status)->cri = (seedNum / 6) % 80;
         (status + G_status)->isBattle = 0;
         (status + G_status)->maxHp = (status + G_status)->hp;
