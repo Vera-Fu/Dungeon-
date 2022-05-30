@@ -1,4 +1,4 @@
-ï»¿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 
 #include<stdio.h>
 #include<string.h>
@@ -12,7 +12,7 @@
 #define MAX_LOGS 26
 #define MAX_STATUS 15
 
-//------------æ§‹é€ ä½“å®šç¾©------------
+//------------\‘¢‘Ì’è‹`------------
 typedef enum {
     DISP_START = 0,
     DISP_LOAD,
@@ -20,85 +20,89 @@ typedef enum {
 }SCENE;
 
 typedef struct {
-    int x;              //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™x
-    int y;              //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™y
-    int potionNum;      //å›å¾©è–¬ã®æ•°
-    int gold;           //ã‚´ãƒ¼ãƒ«ãƒ‰ã®æ•°
+    int x;              //ƒvƒŒƒCƒ„[‚ÌÀ•Wx
+    int y;              //ƒvƒŒƒCƒ„[‚ÌÀ•Wy
+    int potionNum;      //‰ñ•œ–ò‚Ì”
+    int gold;           //ƒS[ƒ‹ƒh‚Ì”
 }PLAYER;
 
 typedef struct {
-    int x;              //ã“ã®åŒºåŸŸã®åº§æ¨™x
-    int y;              //ã“ã®åŒºåŸŸã®åº§æ¨™y
-    int index;          //åŒºåŸŸã‚¿ã‚¤ãƒ—:1.å•†åº— 2.ä½•ã§ã‚‚ãªã„ 3.ç„¡æ–™å›å¾©å±‹ 4.å‹Ÿé›†å±‹ 5.ãƒ©ãƒ³ãƒ€ãƒ å±‹ 6.æ•µã®å±‹ 7.bossã®å±‹ 8.éšæ®µ 9.åˆã‚ã¦ã®å±‹
-    int isCheck;        //ã€Œã“ã®åŒºåŸŸã¯ã‚¯ãƒªã‚¢ã—ãŸã‹ï¼Ÿã€ã®åˆ¤å®šã€€0ï¼šã¾ã æ¢ç´¢ã—ã¦ã„ãªã„ 1ï¼šç¹°ã‚Šè¿”ã™ã“ã¨ã¯ä¸å¯ 2ï¼šç¹°ã‚Šè¿”ã™ã“ã¨ã¯å¯
-    int isUp;           //ã€Œä¸Šã«ç§»å‹•ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã‹ï¼Ÿã€ã®åˆ¤å®š
-    int isDown;         //ã€Œä¸‹ã«ç§»å‹•ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã‹ï¼Ÿã€ã®åˆ¤å®š
-    int isLeft;         //ã€Œå·¦ã«ç§»å‹•ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã‹ï¼Ÿã€ã®åˆ¤å®š
-    int isRight;        //ã€Œå³ã«ç§»å‹•ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã‹ï¼Ÿã€ã®åˆ¤å®š
+    int x;              //‚±‚Ì‹æˆæ‚ÌÀ•Wx
+    int y;              //‚±‚Ì‹æˆæ‚ÌÀ•Wy
+    int index;          //‹æˆæƒ^ƒCƒv:1.¤“X 2.‰½‚Å‚à‚È‚¢ 3.–³—¿‰ñ•œ‰® 4.•åW‰® 5.ƒ‰ƒ“ƒ_ƒ€‰® 6.“G‚Ì‰® 7.boss‚Ì‰® 8.ŠK’i 9.‰‚ß‚Ä‚Ì‰®
+    int isCheck;        //u‚±‚Ì‹æˆæ‚ÍƒNƒŠƒA‚µ‚½‚©Hv‚Ì”»’è@0F‚Ü‚¾’Tõ‚µ‚Ä‚¢‚È‚¢ 1FŒJ‚è•Ô‚·‚±‚Æ‚Í•s‰Â 2FŒJ‚è•Ô‚·‚±‚Æ‚Í‰Â
+    int isUp;           //uã‚ÉˆÚ“®‚·‚é‚±‚Æ‚ª‚Å‚«‚é‚©Hv‚Ì”»’è
+    int isDown;         //u‰º‚ÉˆÚ“®‚·‚é‚±‚Æ‚ª‚Å‚«‚é‚©Hv‚Ì”»’è
+    int isLeft;         //u¶‚ÉˆÚ“®‚·‚é‚±‚Æ‚ª‚Å‚«‚é‚©Hv‚Ì”»’è
+    int isRight;        //u‰E‚ÉˆÚ“®‚·‚é‚±‚Æ‚ª‚Å‚«‚é‚©Hv‚Ì”»’è
 }MAPS;
 
 typedef struct {
-    char name[65];      //ã‚­ãƒ£ãƒ©ã®åå‰
-    int maxHp;          //ã‚­ãƒ£ãƒ©ã®hpã®æœ€å¤§å€¤
-    int hp;             //ã‚­ãƒ£ãƒ©ã®hp
-    int atk;            //ã‚­ãƒ£ãƒ©ã®æ”»æ’ƒåŠ›
-    int def;            //ã‚­ãƒ£ãƒ©ã®é˜²è¡›åŠ›
-    int spd;            //ã‚­ãƒ£ãƒ©ã®ã‚¹ãƒ”ãƒ¼ãƒ‰
-    int eva;            //ã‚­ãƒ£ãƒ©ã®å›é¿ç‡
-    int cri;            //ã‚­ãƒ£ãƒ©ã®ä¼šå¿ƒç‡
-    int isBattle;       //0ã¯ä¼‘æ†©ä¸­ã€1ã¯å‡ºæˆ¦ä¸­ã€2ã¯æˆ¦é—˜ä¸èƒ½
+    char name[65];      //ƒLƒƒƒ‰‚Ì–¼‘O
+    int maxHp;          //ƒLƒƒƒ‰‚Ìhp‚ÌÅ‘å’l
+    int hp;             //ƒLƒƒƒ‰‚Ìhp
+    int atk;            //ƒLƒƒƒ‰‚ÌUŒ‚—Í
+    int def;            //ƒLƒƒƒ‰‚Ì–h‰q—Í
+    int spd;            //ƒLƒƒƒ‰‚ÌƒXƒs[ƒh
+    int eva;            //ƒLƒƒƒ‰‚Ì‰ñ”ğ—¦
+    int cri;            //ƒLƒƒƒ‰‚Ì‰ïS—¦
+    int isBattle;       //0‚Í‹xŒe’†A1‚Íoí’†A2‚Íí“¬•s”\
 }STATUS;
 
 
-//------------æ§‹é€ ä½“å®£è¨€------------
-MAPS map[MAX_MAP];      //ãƒãƒƒãƒ—ã®ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹
-PLAYER player[1];       //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹
-STATUS status[MAX_STATUS];      //ã‚­ãƒ£ãƒ©ã®ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹
-STATUS enemy[1];        //æ•µã®ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹
-STATUS boss[1];         //bossã®ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹
+//------------\‘¢‘ÌéŒ¾------------
+MAPS map[MAX_MAP];      //ƒ}ƒbƒv‚Ìƒf[ƒ^‚ğ•Û‘¶‚·‚é
+PLAYER player[1];       //ƒvƒŒƒCƒ„[‚Ìƒf[ƒ^‚ğ•Û‘¶‚·‚é
+STATUS status[MAX_STATUS];      //ƒLƒƒƒ‰‚Ìƒf[ƒ^‚ğ•Û‘¶‚·‚é
+STATUS enemy[1];        //“G‚Ìƒf[ƒ^‚ğ•Û‘¶‚·‚é
+STATUS boss[1];         //boss‚Ìƒf[ƒ^‚ğ•Û‘¶‚·‚é
 
-//------------ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°å®£è¨€------------
-int G_floor;            //ã€Œä»Šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯ã©ã®ãƒ¬ãƒ™ãƒ«ã«ã„ã‚‹ã‹ã€ã®åˆ¤å®š
-int G_checkMapNum;      //ã“ã®ãƒ¬ãƒ™ãƒ«ã§æ¢ç´¢ã—ãŸåŒºåŸŸã®æ•°
-int G_logs;             //logsã®è¡Œæ•°
-int G_status;           //ä»ŠæŒã£ã¦ã„ã‚‹ã‚­ãƒ£ãƒ©ã®æ•°
+//------------ƒOƒ[ƒoƒ‹•Ï”éŒ¾------------
+int G_floor;            //u¡ƒvƒŒƒCƒ„[‚Í‚Ç‚ÌƒŒƒxƒ‹‚É‚¢‚é‚©v‚Ì”»’è
+int G_checkMapNum;      //‚±‚ÌƒŒƒxƒ‹‚Å’Tõ‚µ‚½‹æˆæ‚Ì”
+int G_logs;             //logs‚Ìs”
+int G_status;           //¡‚Á‚Ä‚¢‚éƒLƒƒƒ‰‚Ì”
+char bgm[] = "The Kingdom.mp3";
+int BGM = opensound(bgm);
+char dead[] = "dead.mp3";
+int DEAD = opensound(dead);
 
-//------------é–¢æ•°å®£è¨€------------
-void title();               //ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢
-void menu();                //ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”»é¢
-void runGame();             //ã‚²ãƒ¼ãƒ é–‹å§‹
-void moveMent(PLAYER* player, MAPS* map);       //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ã‚’èª­ã¿å‡ºã—
+//------------ŠÖ”éŒ¾------------
+void title();               //ƒ^ƒCƒgƒ‹‰æ–Ê
+void menu();                //ƒƒjƒ…[‰æ–Ê
+void runGame();             //ƒQ[ƒ€ŠJn
+void moveMent(PLAYER* player, MAPS* map);       //ƒvƒŒƒCƒ„[‚Ì“ü—Í‚ğ“Ç‚İo‚µ
 
-void mapsPaint(MAPS* map);  //åŒºåŸŸã‚’æã                    
-void mapsType(MAPS* map);   //åŒºåŸŸã®ã‚¿ãƒ¼ãƒ—è¨­å®š
-void mapsPaint1();          //ãƒ¬ãƒ™ãƒ«1ã®ãƒãƒƒãƒ—è¨­å®š
-void mapsPaint2();          //ãƒ¬ãƒ™ãƒ«2ã®ãƒãƒƒãƒ—è¨­å®š
-void mapsPaint3();          //ãƒ¬ãƒ™ãƒ«3ã®ãƒãƒƒãƒ—è¨­å®š
+void mapsPaint(MAPS* map);  //‹æˆæ‚ğ•`‚­                    
+void mapsType(MAPS* map);   //‹æˆæ‚Ìƒ^[ƒvİ’è
+void mapsPaint1();          //ƒŒƒxƒ‹1‚Ìƒ}ƒbƒvİ’è
+void mapsPaint2();          //ƒŒƒxƒ‹2‚Ìƒ}ƒbƒvİ’è
+void mapsPaint3();          //ƒŒƒxƒ‹3‚Ìƒ}ƒbƒvİ’è
 
-void logs(const char* c);   //logsä¿å­˜
-void logsRead();            //logsã‚’å‡ºåŠ›ã™ã‚‹
+void logs(const char* c);   //logs•Û‘¶
+void logsRead();            //logs‚ğo—Í‚·‚é
 
-void room(MAPS* map);       //ã€Œã“ã®åŒºåŸŸãŒã©ã®ã‚¿ã‚¤ãƒ—ã€ã®åˆ¤å®š
-void shop(PLAYER* player, MAPS* map, STATUS* status);               //å•†åº—ã®å‡¦ç†
-void healRoom(STATUS* status, MAPS* map);                           //ç„¡æ–™å›å¾©å±‹ã®å‡¦ç†
-void charaRoom(PLAYER* player, MAPS* map, STATUS* status);          //å‹Ÿé›†å±‹ã®å‡¦ç†
-void randomRoom(PLAYER* player, MAPS* map, STATUS* status);         //ãƒ©ãƒ³ãƒ€ãƒ å±‹ã®å‡¦ç†
-void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy);      //æ•µã®å±‹ã®å‡¦ç†
-void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy);       //bossã®å±‹ã®å‡¦ç†
-void nextFloorRoom(PLAYER* player, MAPS* map, STATUS* status);      //éšæ®µã®å‡¦ç†
+void room(MAPS* map);       //u‚±‚Ì‹æˆæ‚ª‚Ç‚Ìƒ^ƒCƒvv‚Ì”»’è
+void shop(PLAYER* player, MAPS* map, STATUS* status);               //¤“X‚Ìˆ—
+void healRoom(STATUS* status, MAPS* map);                           //–³—¿‰ñ•œ‰®‚Ìˆ—
+void charaRoom(PLAYER* player, MAPS* map, STATUS* status);          //•åW‰®‚Ìˆ—
+void randomRoom(PLAYER* player, MAPS* map, STATUS* status);         //ƒ‰ƒ“ƒ_ƒ€‰®‚Ìˆ—
+void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy);      //“G‚Ì‰®‚Ìˆ—
+void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy);       //boss‚Ì‰®‚Ìˆ—
+void nextFloorRoom(PLAYER* player, MAPS* map, STATUS* status);      //ŠK’i‚Ìˆ—
 
-void charaInput(STATUS* status);        //ã‚­ãƒ£ãƒ©ã‚’å…¥åŠ›ã™ã‚‹
-void charaOutput(STATUS* status, PLAYER* player);       //ã‚­ãƒ£ãƒ©ã‚’å‡ºåŠ›ã™ã‚‹
+void charaInput(STATUS* status);        //ƒLƒƒƒ‰‚ğ“ü—Í‚·‚é
+void charaOutput(STATUS* status, PLAYER* player);       //ƒLƒƒƒ‰‚ğo—Í‚·‚é
 
-void battle(STATUS* status, STATUS* enemy, PLAYER* player);     //æˆ¦é—˜å‡¦ç†1
-void battleS(STATUS* status, STATUS* enemy);                    //æˆ¦é—˜å‡¦ç†2
+void battle(STATUS* status, STATUS* enemy, PLAYER* player);     //í“¬ˆ—1
+void battleS(STATUS* status, STATUS* enemy);                    //í“¬ˆ—2
 
-void saveGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss);     //ã‚»ãƒ¼ãƒ–ã‚²ãƒ¼ãƒ 
-void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss);     //ãƒ­ãƒ¼ãƒ‰ã‚²ãƒ¼ãƒ 
+void saveGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss);     //ƒZ[ƒuƒQ[ƒ€
+void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss);     //ƒ[ƒhƒQ[ƒ€
 
-void endGame();             //ã‚²ãƒ¼ãƒ çµ‚äº†ã®å‡¦ç†
+void endGame();             //ƒQ[ƒ€I—¹‚Ìˆ—
 
-void hideCursor();          //cursorã‚’éš ã•ã›ã¦
+void hideCursor();          //cursor‚ğ‰B‚³‚¹‚Ä
 
 int main() {    
     hideCursor();
@@ -107,8 +111,9 @@ int main() {
     return 0;
 }
 
-//ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢
+//ƒ^ƒCƒgƒ‹‰æ–Ê
 void title() {
+    playsound(BGM, 1);
     fopen("logs.txt", "w");
     clrscr();
     int index = 0;
@@ -116,43 +121,43 @@ void title() {
     {
         reinport();
         gotoxy(50, 5);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(50, 6);
-        printf("â”ƒ%sâ”ƒ", "  â– Dungeonâ–  ");
+        printf("„«%s„«", "  ¡Dungeon¡ ");
         gotoxy(50, 7);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         switch (index)
         {
         case DISP_START:
             gotoxy(53, 15);
             textattr(0x70);
-            printf("ã‚²ãƒ¼ãƒ é–‹å§‹");
+            printf("ƒQ[ƒ€ŠJn");
             textattr(0x0F);
             gotoxy(52, 17);
-            printf("ã‚²ãƒ¼ãƒ ãƒ­ãƒ¼ãƒ‰");
+            printf("ƒQ[ƒ€ƒ[ƒh");
             gotoxy(53, 19);
-            printf("ã‚²ãƒ¼ãƒ çµ‚äº†");
+            printf("ƒQ[ƒ€I—¹");
             rewind(stdin);
             break;
         case DISP_LOAD:
             gotoxy(53, 15);
-            printf("ã‚²ãƒ¼ãƒ é–‹å§‹");
+            printf("ƒQ[ƒ€ŠJn");
             gotoxy(52, 17);
             textattr(0x70);
-            printf("ã‚²ãƒ¼ãƒ ãƒ­ãƒ¼ãƒ‰");
+            printf("ƒQ[ƒ€ƒ[ƒh");
             gotoxy(53, 19);
             textattr(0x0F);
-            printf("ã‚²ãƒ¼ãƒ çµ‚äº†");
+            printf("ƒQ[ƒ€I—¹");
             rewind(stdin);
             break;
         case DISP_END:
             gotoxy(53, 15);
-            printf("ã‚²ãƒ¼ãƒ é–‹å§‹");
+            printf("ƒQ[ƒ€ŠJn");
             gotoxy(52, 17);
-            printf("ã‚²ãƒ¼ãƒ ãƒ­ãƒ¼ãƒ‰");
+            printf("ƒQ[ƒ€ƒ[ƒh");
             gotoxy(53, 19);
             textattr(0x70);
-            printf("ã‚²ãƒ¼ãƒ çµ‚äº†");
+            printf("ƒQ[ƒ€I—¹");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -200,9 +205,9 @@ void title() {
     }
 }
 
-//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”»é¢
+//ƒƒjƒ…[‰æ–Ê
 void menu() {
-    int index = 0;      //0ï¼šã¤ã¥ã 1ï¼šã‚»ãƒ¼ãƒ–ã‚²ãƒ¼ãƒ  2ï¼šã‚­ãƒ£ãƒ©ã‚’å‡ºåŠ›ã™ã‚‹ 3ï¼šã‚²ãƒ¼ãƒ çµ‚äº†
+    int index = 0;      //0F‚Â‚Ã‚­ 1FƒZ[ƒuƒQ[ƒ€ 2FƒLƒƒƒ‰‚ğo—Í‚·‚é 3FƒQ[ƒ€I—¹
     clrscr();
     while (1)
     {
@@ -210,70 +215,70 @@ void menu() {
         for (int i = 6; i < 25; i++)
         {
             gotoxy(45, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 6; i < 25; i++)
         {
             gotoxy(72, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(45, 5);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(45, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(53, 7);
-        printf("â– â– MENUâ– â– ");
+        printf("¡¡MENU¡¡");
         switch (index)
         {
         case 0:
             gotoxy(53, 15);
             textattr(0x70);
-            printf("ã¤ã¥ã");
+            printf("‚Â‚Ã‚­");
             textattr(0x0F);
             gotoxy(53, 17);
-            printf("ã‚»ãƒ¼ãƒ–");
+            printf("ƒZ[ƒu");
             gotoxy(53, 19);
-            printf("ã‚­ãƒ£ãƒ©ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹");
+            printf("ƒLƒƒƒ‰ƒXƒe[ƒ^ƒX");
             gotoxy(53, 21);
-            printf("ã‚²ãƒ¼ãƒ çµ‚äº†");
+            printf("ƒQ[ƒ€I—¹");
             rewind(stdin);
             break;
         case 1:
             gotoxy(53, 15);
-            printf("ã¤ã¥ã");
+            printf("‚Â‚Ã‚­");
             gotoxy(53, 17);
             textattr(0x70);
-            printf("ã‚»ãƒ¼ãƒ–");
+            printf("ƒZ[ƒu");
             textattr(0x0F);
             gotoxy(53, 19);
-            printf("ã‚­ãƒ£ãƒ©ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹");
+            printf("ƒLƒƒƒ‰ƒXƒe[ƒ^ƒX");
             gotoxy(53, 21);
-            printf("ã‚²ãƒ¼ãƒ çµ‚äº†");
+            printf("ƒQ[ƒ€I—¹");
             rewind(stdin);
             break;
         case 2:
             gotoxy(53, 15);
-            printf("ã¤ã¥ã");
+            printf("‚Â‚Ã‚­");
             gotoxy(53, 17);
-            printf("ã‚»ãƒ¼ãƒ–");
+            printf("ƒZ[ƒu");
             gotoxy(53, 19);
             textattr(0x70);
-            printf("ã‚­ãƒ£ãƒ©ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹");
+            printf("ƒLƒƒƒ‰ƒXƒe[ƒ^ƒX");
             textattr(0x0F);
             gotoxy(53, 21);
-            printf("ã‚²ãƒ¼ãƒ çµ‚äº†");
+            printf("ƒQ[ƒ€I—¹");
             rewind(stdin);
             break;
         case 3:
             gotoxy(53, 15);
-            printf("ã¤ã¥ã");
+            printf("‚Â‚Ã‚­");
             gotoxy(53, 17);
-            printf("ã‚»ãƒ¼ãƒ–");
+            printf("ƒZ[ƒu");
             gotoxy(53, 19);
-            printf("ã‚­ãƒ£ãƒ©ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹");
+            printf("ƒLƒƒƒ‰ƒXƒe[ƒ^ƒX");
             gotoxy(53, 21);
             textattr(0x70);
-            printf("ã‚²ãƒ¼ãƒ çµ‚äº†");
+            printf("ƒQ[ƒ€I—¹");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -323,12 +328,12 @@ void menu() {
     }
 }
 
-//ã‚²ãƒ¼ãƒ é–‹å§‹
+//ƒQ[ƒ€ŠJn
 void runGame() {
     clrscr();
-    printf("æ–°äººã‹ï¼Ÿã‚ãšã‚‰ã—ã„ã­...\n\n");
+    printf("Vl‚©H‚ß‚¸‚ç‚µ‚¢‚Ë...\n\n");
     msleep(2000);
-    printf("æ–°äººã¯Dungeonã®å®ˆè­·è€…Â·ã‚®ãƒ«ã‚¬ãƒ¡ãƒƒã‚·ãƒ¥Â·ãƒ«ã‚¤ãƒ¼ãƒ€ã‹ã‚‰ç„¡æ–™ãªã‚­ãƒ£ãƒ©ã‚’äºŒã¤ä¸ãˆã‚‰ã‚Œã‚‹...\n\n");
+    printf("Vl‚ÍDungeon‚ÌçŒìÒEƒMƒ‹ƒKƒƒbƒVƒ…Eƒ‹ƒC[ƒ_‚©‚ç–³—¿‚ÈƒLƒƒƒ‰‚ğ“ñ‚Â—^‚¦‚ç‚ê‚é...\n\n");
     msleep(3500);
     printf("GOOD LUCK...");
     msleep(2000);
@@ -337,11 +342,11 @@ void runGame() {
     charaInput(status);
     clrscr();
 
-    //åˆæœŸåŒ–
+    //‰Šú‰»
     G_floor = 1;
     G_checkMapNum = 1;
     player[0] = { 5, 9, 1, 30 };    
-    boss[0] = {"Dungeonã®å®ˆè­·è€…Â·ã‚®ãƒ«ã‚¬ãƒ¡ãƒƒã‚·ãƒ¥Â·ãƒ«ã‚¤ãƒ¼ãƒ€", 1000, 1000, 100, 50, 10, 5, 10, 1};
+    boss[0] = {"Dungeon‚ÌçŒìÒEƒMƒ‹ƒKƒƒbƒVƒ…Eƒ‹ƒC[ƒ_", 1000, 1000, 100, 50, 10, 5, 10, 1};
     
     mapsPaint1();
     while (1)
@@ -353,17 +358,13 @@ void runGame() {
     getchar();
 }
 
-//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ã‚’èª­ã¿å‡ºã—
+//ƒvƒŒƒCƒ„[‚Ì“ü—Í‚ğ“Ç‚İo‚µ
 void moveMent(PLAYER* player, MAPS* map) {
-    char bgm[] = "The Kingdom.mp3";
-    int BGM = opensound(bgm);
-    playsound(BGM, 1);
-
     gotoxy(player->x, player->y);
-    printf("â™€");    
+    printf("Š");    
     gotoxy(25, 2);
-    printf("%då±¤ç›®", G_floor);
-    //ã‚‚ã—ã“ã®åŒºåŸŸãŒæ¢ç´¢ã—ã¦ã„ãŸã€å‡ºåŠ›ã™ã‚‹
+    printf("%d‘w–Ú", G_floor);
+    //‚à‚µ‚±‚Ì‹æˆæ‚ª’Tõ‚µ‚Ä‚¢‚½Ao—Í‚·‚é
     for (int i = 0; i < MAX_MAP; i++)
     {
         if ((map + i)->isCheck == 1 || (map + i)->isCheck == 2)
@@ -377,7 +378,7 @@ void moveMent(PLAYER* player, MAPS* map) {
         reinport();
         clrscr();
     }
-    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯ä¸Šã«ç§»å‹•ã™ã‚‹å‡¦ç†
+    //ƒvƒŒƒCƒ„[‚Íã‚ÉˆÚ“®‚·‚éˆ—
     if (inport(PK_UP))
     {
         for (int i = 0; i < MAX_MAP; i++)
@@ -385,7 +386,7 @@ void moveMent(PLAYER* player, MAPS* map) {
             if (player->x == (map + i)->x && player->y - 5 == (map + i)->y && (map + i)->isDown == 1)
             {
                 player->y -= 5;
-                logs("ä¸Šã«ç§»å‹•ã™ã‚‹\n");
+                logs("ã‚ÉˆÚ“®‚·‚é\n");
                 if ((map + i)->isCheck == 0 || (map + i)->isCheck == 2)
                 {
                     if ((map + i)->isCheck == 0)
@@ -401,7 +402,7 @@ void moveMent(PLAYER* player, MAPS* map) {
         reinport();
         clrscr();
     }
-    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯ä¸‹ã«ç§»å‹•ã™ã‚‹å‡¦ç†
+    //ƒvƒŒƒCƒ„[‚Í‰º‚ÉˆÚ“®‚·‚éˆ—
     if (inport(PK_DOWN))
     {
         for (int i = 0; i < MAX_MAP; i++)
@@ -409,7 +410,7 @@ void moveMent(PLAYER* player, MAPS* map) {
             if (player->x == (map + i)->x && player->y + 5 == (map + i)->y && (map + i)->isUp == 1)
             {
                 player->y += 5;
-                logs("ä¸‹ã«ç§»å‹•ã™ã‚‹\n");
+                logs("‰º‚ÉˆÚ“®‚·‚é\n");
                 if ((map + i)->isCheck == 0 || (map + i)->isCheck == 2)
                 {
                     if ((map + i)->isCheck == 0)
@@ -425,7 +426,7 @@ void moveMent(PLAYER* player, MAPS* map) {
         reinport();
         clrscr();
     }
-    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯å·¦ã«ç§»å‹•ã™ã‚‹å‡¦ç†
+    //ƒvƒŒƒCƒ„[‚Í¶‚ÉˆÚ“®‚·‚éˆ—
     if (inport(PK_LEFT))
     {
         for (int i = 0; i < MAX_MAP; i++)
@@ -433,7 +434,7 @@ void moveMent(PLAYER* player, MAPS* map) {
             if (player->x - 10 == (map + i)->x && player->y == (map + i)->y && (map + i)->isRight == 1)
             {
                 player->x -= 10;
-                logs("å·¦ã«ç§»å‹•ã™ã‚‹\n");
+                logs("¶‚ÉˆÚ“®‚·‚é\n");
                 if ((map + i)->isCheck == 0 || (map + i)->isCheck == 2)
                 {
                     if ((map + i)->isCheck == 0)
@@ -449,7 +450,7 @@ void moveMent(PLAYER* player, MAPS* map) {
         reinport();
         clrscr();
     }
-    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯å³ã«ç§»å‹•ã™ã‚‹å‡¦ç†
+    //ƒvƒŒƒCƒ„[‚Í‰E‚ÉˆÚ“®‚·‚éˆ—
     if (inport(PK_RIGHT))
     {
         for (int i = 0; i < MAX_MAP; i++)
@@ -457,7 +458,7 @@ void moveMent(PLAYER* player, MAPS* map) {
             if (player->x + 10 == (map + i)->x && player->y == (map + i)->y && (map + i)->isLeft == 1)
             {
                 player->x += 10;
-                logs("å³ã«ç§»å‹•ã™ã‚‹\n");
+                logs("‰E‚ÉˆÚ“®‚·‚é\n");
                 if ((map + i)->isCheck == 0 || (map + i)->isCheck == 2)
                 {
                     if ((map + i)->isCheck == 0)
@@ -475,9 +476,9 @@ void moveMent(PLAYER* player, MAPS* map) {
     }
 }
 
-//åŒºåŸŸã‚’æã
+//‹æˆæ‚ğ•`‚­
 void mapsPaint(MAPS* map) {
-    //ã‚‚ã—ã“ã®åŒºåŸŸã¯ã‚¿ã‚¤ãƒ—ãŒæŒã£ã¦ã„ãªã„ã€åŒºåŸŸã«ã‚¿ã‚¤ãƒ—ã‚’ä¸ãˆã‚‹
+    //‚à‚µ‚±‚Ì‹æˆæ‚Íƒ^ƒCƒv‚ª‚Á‚Ä‚¢‚È‚¢A‹æˆæ‚Éƒ^ƒCƒv‚ğ—^‚¦‚é
     if (map->index == 0)
     {
         mapsType(map);
@@ -485,66 +486,66 @@ void mapsPaint(MAPS* map) {
     if (map->isUp == 1)
     {
         gotoxy(map->x + 2, map->y);
-        printf("â”ƒ");
+        printf("„«");
     }
     if (map->isDown == 1)
     {
         gotoxy(map->x + 2, map->y + 4);
-        printf("â”ƒ");
+        printf("„«");
     }
     if (map->isLeft == 1)
     {
         gotoxy(map->x - 2, map->y + 2);
-        printf("â”");
+        printf("„ª");
     }
     if (map->isRight == 1)
     {
         gotoxy(map->x + 6, map->y + 2);
-        printf("â”");
+        printf("„ª");
     }
     gotoxy(map->x, map->y + 1);
-    printf("â– â– â– ");
+    printf("¡¡¡");
     gotoxy(wherex() - 6, wherey() + 1);
-    printf("â–   â– ");
+    printf("¡  ¡");
     gotoxy(wherex() - 6, wherey() + 1);
-    printf("â– â– â– ");
+    printf("¡¡¡");
     switch (map->index)
     {
     case 1:
         gotoxy(map->x + 2, map->y + 2);
-        printf("ï¿¥");
+        printf("");
         break;
     case 2:
         gotoxy(map->x + 2, map->y + 2);
-        printf("â– ");
+        printf("¡");
         break;
     case 3:
         gotoxy(map->x + 2, map->y + 2);
-        printf("â—‡");
+        printf("");
         break;
     case 4:
         gotoxy(map->x + 2, map->y + 2);
-        printf("â—†");
+        printf("Ÿ");
         break;
     case 5:
         gotoxy(map->x + 2, map->y + 2);
-        printf("ï¼Ÿ");
+        printf("H");
         break;
     case 6:
         gotoxy(map->x + 2, map->y + 2);
-        printf("â–³");
+        printf("¢");
         break;
     case 7:
         gotoxy(map->x + 2, map->y + 2);
-        printf("â–²");
+        printf("£");
         break;
     case 8:
         gotoxy(map->x + 2, map->y + 2);
-        printf("â—‹");
+        printf("›");
         break;
     case 9:
         gotoxy(map->x + 2, map->y + 2);
-        printf("â—");
+        printf("œ");
         break;
     default:
         break;
@@ -552,7 +553,7 @@ void mapsPaint(MAPS* map) {
 
 }
 
-//åŒºåŸŸã®ã‚¿ãƒ¼ãƒ—è¨­å®š
+//‹æˆæ‚Ìƒ^[ƒvİ’è
 void mapsType(MAPS* map)
 {
     if (G_checkMapNum == 8)
@@ -598,7 +599,7 @@ void mapsType(MAPS* map)
     }
 }
 
-//ãƒ¬ãƒ™ãƒ«1ã®ãƒãƒƒãƒ—è¨­å®š
+//ƒŒƒxƒ‹1‚Ìƒ}ƒbƒvİ’è
 void mapsPaint1() {
     gotoxy(5, 10);
     map[0] = { wherex(), wherey() - 1, 9, 1, 1, 1, 0, 1 };      //(x,y,index,isCheck,isUp,isDown,isLeft,isRight);
@@ -624,7 +625,7 @@ void mapsPaint1() {
     map[10] = { wherex(), wherey() - 1, 0, 0, 0, 0, 1, 0 };
 }
 
-//ãƒ¬ãƒ™ãƒ«2ã®ãƒãƒƒãƒ—è¨­å®š
+//ƒŒƒxƒ‹2‚Ìƒ}ƒbƒvİ’è
 void mapsPaint2() {
     gotoxy(5, 10);
     map[0] = { wherex(), wherey() - 1, 9, 1, 0, 1, 0, 1 };      //(x,y,index,isCheck,isUp,isDown,isLeft,isRight);
@@ -650,7 +651,7 @@ void mapsPaint2() {
     map[10] = { wherex(), wherey() - 1, 0, 0, 0, 0, 1, 0 };
 }
 
-//ãƒ¬ãƒ™ãƒ«3ã®ãƒãƒƒãƒ—è¨­å®š
+//ƒŒƒxƒ‹3‚Ìƒ}ƒbƒvİ’è
 void mapsPaint3() {
     gotoxy(5, 10);
     map[0] = { wherex(), wherey() - 1, 9, 1, 0, 1, 0, 1 };      //(x,y,index,isCheck,isUp,isDown,isLeft,isRight);
@@ -676,7 +677,7 @@ void mapsPaint3() {
     map[10] = { wherex(), wherey() - 1, 0, 0, 0, 0, 0, 1 };
 }
 
-//logsä¿å­˜
+//logs•Û‘¶
 void logs(const char* c) {
     if (G_logs > MAX_LOGS)
     {
@@ -690,22 +691,22 @@ void logs(const char* c) {
     G_logs += 1;
 }
 
-//logsã‚’å‡ºåŠ›ã™ã‚‹
+//logs‚ğo—Í‚·‚é
 void logsRead() {
     for (int i = 3; i < 30; i++)
     {
         gotoxy(60, i);
-        printf("â”ƒ");
+        printf("„«");
     }
     for (int i = 3; i < 30; i++)
     {
         gotoxy(115, i);
-        printf("â”ƒ");
+        printf("„«");
     }
     gotoxy(60, 2);
-    printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+    printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
     gotoxy(60, 30);
-    printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+    printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
     FILE* fp = fopen("logs.txt", "r+");
     char c[512];
     for (int i = 3; i < G_logs + 3; i++)
@@ -717,7 +718,7 @@ void logsRead() {
     fclose(fp);
 }
 
-//ã€Œã“ã®åŒºåŸŸãŒã©ã®ã‚¿ã‚¤ãƒ—ã€ã®åˆ¤å®š
+//u‚±‚Ì‹æˆæ‚ª‚Ç‚Ìƒ^ƒCƒvv‚Ì”»’è
 void room(MAPS* map) {
     mapsPaint(map);
     switch (map->index)
@@ -727,7 +728,7 @@ void room(MAPS* map) {
         break;
     case 2:
         msleep(1000);
-        logs("ä½•ã‚‚ãªã„...\n");       
+        logs("‰½‚à‚È‚¢...\n");       
         break;
     case 3:
         healRoom(status, map);
@@ -752,9 +753,9 @@ void room(MAPS* map) {
     }
 }
 
-//å•†åº—ã®å‡¦ç†
+//¤“X‚Ìˆ—
 void shop(PLAYER* player, MAPS* map, STATUS* status) {
-    logs("å•†åº—ã‚’è¦‹ã¤ã‹ã‚Šã¾ã—ãŸ\n");
+    logs("¤“X‚ğŒ©‚Â‚©‚è‚Ü‚µ‚½\n");
     logsRead();
     gotoxy(wherex(), wherey());
     msleep(500);
@@ -764,83 +765,83 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
     msleep(500);
     printf(".");
     msleep(1000);
-    int index = 0;      //0ï¼šå›å¾©è–¬ã‚’è²·ã† 1ï¼šå…¨ã¦ã®ã‚­ãƒ£ãƒ©ã®hpã‚’å›å¾©ã™ã‚‹ 2ï¼šã‚­ãƒ£ãƒ©ã‚’é›‡ã† 3ï¼šé–‰ã˜ã‚‹
+    int index = 0;      //0F‰ñ•œ–ò‚ğ”ƒ‚¤ 1F‘S‚Ä‚ÌƒLƒƒƒ‰‚Ìhp‚ğ‰ñ•œ‚·‚é 2FƒLƒƒƒ‰‚ğŒÙ‚¤ 3F•Â‚¶‚é
     clrscr();
     while (1)
     {
         reinport();
         gotoxy(46, 4);
-        printf("ãŠé‡‘ï¼š%d G", player->gold);
+        printf("‚¨‹àF%d G", player->gold);
         gotoxy(46, 26);
-        printf("å›å¾©è–¬ï¼š%d", player->potionNum);
+        printf("‰ñ•œ–òF%d", player->potionNum);
         for (int i = 6; i < 25; i++)
         {
             gotoxy(45, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 6; i < 25; i++)
         {
             gotoxy(72, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(45, 5);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(45, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(50, 7);
-        printf("ãƒ«ã‚¤ãƒ¼ãƒ€å•†åº—");
+        printf("ƒ‹ƒC[ƒ_¤“X");
         switch (index)
         {
         case 0:
             gotoxy(50, 12);
             textattr(0x70);
-            printf("å›å¾©è–¬ã‚’è²·ã†(10 G)");
+            printf("‰ñ•œ–ò‚ğ”ƒ‚¤(10 G)");
             textattr(0x0F);
             gotoxy(50, 14);
-            printf("å›å¾©(50 G)");
+            printf("‰ñ•œ(50 G)");
             gotoxy(50, 16);
-            printf("ã‚­ãƒ£ãƒ©ã‚’é›‡ã†(20-45 G)");
+            printf("ƒLƒƒƒ‰‚ğŒÙ‚¤(20-45 G)");
             gotoxy(50, 18);
-            printf("é–‰ã˜ã‚‹");
+            printf("•Â‚¶‚é");
             rewind(stdin);
             break;
         case 1:
             gotoxy(50, 12);
-            printf("å›å¾©è–¬ã‚’è²·ã†(10 G)");
+            printf("‰ñ•œ–ò‚ğ”ƒ‚¤(10 G)");
             textattr(0x70);
             gotoxy(50, 14);
-            printf("å›å¾©(50 G)");
+            printf("‰ñ•œ(50 G)");
             textattr(0x0F);
             gotoxy(50, 16);
-            printf("ã‚­ãƒ£ãƒ©ã‚’é›‡ã†(20-45 G)");
+            printf("ƒLƒƒƒ‰‚ğŒÙ‚¤(20-45 G)");
             gotoxy(50, 18);
-            printf("é–‰ã˜ã‚‹");
+            printf("•Â‚¶‚é");
             rewind(stdin);
             break;
             break;
         case 2:
             gotoxy(50, 12);
-            printf("å›å¾©è–¬ã‚’è²·ã†(10 G)");
+            printf("‰ñ•œ–ò‚ğ”ƒ‚¤(10 G)");
             gotoxy(50, 14);
-            printf("å›å¾©(50 G)");
+            printf("‰ñ•œ(50 G)");
             textattr(0x70);
             gotoxy(50, 16);
-            printf("ã‚­ãƒ£ãƒ©ã‚’é›‡ã†(20-45 G)");
+            printf("ƒLƒƒƒ‰‚ğŒÙ‚¤(20-45 G)");
             textattr(0x0F);
             gotoxy(50, 18);
-            printf("é–‰ã˜ã‚‹");
+            printf("•Â‚¶‚é");
             rewind(stdin);
             break;
         case 3:
             gotoxy(50, 12);
-            printf("å›å¾©è–¬ã‚’è²·ã†(10 G)");
+            printf("‰ñ•œ–ò‚ğ”ƒ‚¤(10 G)");
             gotoxy(50, 14);
-            printf("å›å¾©(50 G)");
+            printf("‰ñ•œ(50 G)");
             gotoxy(50, 16);
-            printf("ã‚­ãƒ£ãƒ©ã‚’é›‡ã†(20-45 G)");
+            printf("ƒLƒƒƒ‰‚ğŒÙ‚¤(20-45 G)");
             textattr(0x70);
             gotoxy(50, 18);
-            printf("é–‰ã˜ã‚‹");
+            printf("•Â‚¶‚é");
             textattr(0x0F);
             rewind(stdin);
         default:
@@ -878,7 +879,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
                     player->gold -= 10;
                     player->potionNum += 1;
                     gotoxy(80, 15);
-                    printf("è³¼å…¥æˆåŠŸï¼é–‰åº—");
+                    printf("w“ü¬Œ÷I•Â“X");
                     msleep(500);
                     printf(".");
                     msleep(500);
@@ -892,7 +893,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
                 else
                 {
                     gotoxy(80, 15);
-                    printf("ãŠé‡‘ã¯è¶³ã‚Šãªã„ï¼");
+                    printf("‚¨‹à‚Í‘«‚è‚È‚¢I");
                     break;
                 }
             case 1:
@@ -904,7 +905,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
                         (status + i)->hp = (status + i)->maxHp;
                     }
                     gotoxy(80, 15);
-                    printf("å…¨ã¦ã®ã‚­ãƒ£ãƒ©ãŒå›å¾©ã—ãŸï¼é–‰åº—");
+                    printf("‘S‚Ä‚ÌƒLƒƒƒ‰‚ª‰ñ•œ‚µ‚½I•Â“X");
                     msleep(500);
                     printf(".");
                     msleep(500);
@@ -918,7 +919,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
                 else
                 {
                     gotoxy(80, 15);
-                    printf("ãŠé‡‘ã¯è¶³ã‚Šãªã„ï¼");
+                    printf("‚¨‹à‚Í‘«‚è‚È‚¢I");
                     break;
                 }
             case 2:
@@ -929,7 +930,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
                     player->gold -= g;
                     charaInput(status);
                     gotoxy(80, 15);
-                    printf("é›‡ã†æˆåŠŸï¼é–‰åº—");
+                    printf("ŒÙ‚¤¬Œ÷I•Â“X");
                     msleep(500);
                     printf(".");
                     msleep(500);
@@ -943,7 +944,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
                 else
                 {
                     gotoxy(80, 15);
-                    printf("ãŠé‡‘ã¯è¶³ã‚Šãªã„ï¼");
+                    printf("‚¨‹à‚Í‘«‚è‚È‚¢I");
                     break;
                 }
             case 3:
@@ -957,9 +958,9 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
     }
 }
 
-//ç„¡æ–™å›å¾©å±‹ã®å‡¦ç†
+//–³—¿‰ñ•œ‰®‚Ìˆ—
 void healRoom(STATUS* status, MAPS* map) {
-    logs("ç„¡æ–™å›å¾©å±‹ã‚’è¦‹ã¤ã‹ã‚Šã¾ã—ãŸ\n");
+    logs("–³—¿‰ñ•œ‰®‚ğŒ©‚Â‚©‚è‚Ü‚µ‚½\n");
     logsRead();
     gotoxy(wherex(), wherey());
     msleep(500);
@@ -977,38 +978,38 @@ void healRoom(STATUS* status, MAPS* map) {
         for (int i = 6; i < 25; i++)
         {
             gotoxy(45, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 6; i < 25; i++)
         {
             gotoxy(72, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(45, 5);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(45, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(53, 7);
-        printf("å›å¾©ã—ãŸã„ã‹ï¼Ÿ");
+        printf("‰ñ•œ‚µ‚½‚¢‚©H");
         gotoxy(54, 8);
-        printf("(ä¸€å›ã ã‘)");
+        printf("(ˆê‰ñ‚¾‚¯)");
         switch (index)
         {
         case 0:
             gotoxy(53, 15);
             textattr(0x70);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             textattr(0x0F);
             gotoxy(53, 17);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             rewind(stdin);
             break;
         case 1:
             gotoxy(53, 15);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             gotoxy(53, 17);
             textattr(0x70);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -1050,7 +1051,7 @@ void healRoom(STATUS* status, MAPS* map) {
                     }                    
                 }
                 gotoxy(60, 27);
-                printf("å…¨ã¦ã®ã‚­ãƒ£ãƒ©ãŒå›å¾©ã—ãŸï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("‘S‚Ä‚ÌƒLƒƒƒ‰‚ª‰ñ•œ‚µ‚½IENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 rewind(stdin);
                 getchar();
                 return;
@@ -1066,9 +1067,9 @@ void healRoom(STATUS* status, MAPS* map) {
 
 }
 
-//å‹Ÿé›†å±‹ã®å‡¦ç†
+//•åW‰®‚Ìˆ—
 void charaRoom(PLAYER* player, MAPS* map, STATUS* status) {
-    logs("ã‚®ãƒ«ã‚¬ãƒ¡ãƒƒã‚·ãƒ¥é…’å ´ã‚’è¦‹ã¤ã‹ã‚Šã¾ã—ãŸ\n");
+    logs("ƒMƒ‹ƒKƒƒbƒVƒ…ğê‚ğŒ©‚Â‚©‚è‚Ü‚µ‚½\n");
     logsRead();
     gotoxy(wherex(), wherey());
     msleep(500);
@@ -1086,38 +1087,38 @@ void charaRoom(PLAYER* player, MAPS* map, STATUS* status) {
         for (int i = 6; i < 25; i++)
         {
             gotoxy(45, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 6; i < 25; i++)
         {
             gotoxy(72, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(45, 5);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(45, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(53, 7);
-        printf("é›‡ã„ãŸã„ã‹ï¼Ÿ");
+        printf("ŒÙ‚¢‚½‚¢‚©H");
         gotoxy(46, 8);
-        printf("(ä¸€å›ã ã‘ã€‚30 GãŒå¿…è¦ã ã€‚)");
+        printf("(ˆê‰ñ‚¾‚¯B30 G‚ª•K—v‚¾B)");
         switch (index)
         {
         case 0:
             gotoxy(53, 15);
             textattr(0x70);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             textattr(0x0F);
             gotoxy(53, 17);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             rewind(stdin);
             break;
         case 1:
             gotoxy(53, 15);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             gotoxy(53, 17);
             textattr(0x70);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -1160,7 +1161,7 @@ void charaRoom(PLAYER* player, MAPS* map, STATUS* status) {
                 else
                 {
                     gotoxy(80, 15);
-                    printf("ãŠé‡‘ã¯è¶³ã‚Šãªã„ï¼");
+                    printf("‚¨‹à‚Í‘«‚è‚È‚¢I");
                     break;
                 }               
             case 1:
@@ -1174,9 +1175,9 @@ void charaRoom(PLAYER* player, MAPS* map, STATUS* status) {
     }
 }
 
-//ãƒ©ãƒ³ãƒ€ãƒ å±‹ã®å‡¦ç†
+//ƒ‰ƒ“ƒ_ƒ€‰®‚Ìˆ—
 void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
-    logs("è¬ã®ãƒ‰ãƒ¼ã‚¢ã‚’è¦‹ã¤ã‹ã‚Šã¾ã—ãŸ\n");
+    logs("“ä‚Ìƒh[ƒA‚ğŒ©‚Â‚©‚è‚Ü‚µ‚½\n");
     logsRead();
     gotoxy(wherex(), wherey());
     msleep(500);
@@ -1194,36 +1195,36 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
         for (int i = 6; i < 25; i++)
         {
             gotoxy(45, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 6; i < 25; i++)
         {
             gotoxy(72, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(45, 5);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(45, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(50, 7);
-        printf("ãƒ‰ãƒ¼ã‚¢ã‚’é–‹ã‘ãŸã„ã‹ï¼Ÿ");
+        printf("ƒh[ƒA‚ğŠJ‚¯‚½‚¢‚©H");
         switch (index)
         {
         case 0:
             gotoxy(53, 15);
             textattr(0x70);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             textattr(0x0F);
             gotoxy(53, 17);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             rewind(stdin);
             break;
         case 1:
             gotoxy(53, 15);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             gotoxy(53, 17);
             textattr(0x70);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -1253,7 +1254,7 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
 
         if (inport(PK_ENTER))
         {
-            int a;      //0ï¼šå›å¾© 1ï¼šå›å¾©è–¬å…¥æ‰‹ 2ï¼šã‚´ãƒ¼ãƒ«ãƒ‰å…¥æ‰‹ 3ï¼šæˆ¦é—˜å‡¦ç† 4ï¼šå…¨ä½“ã«ãƒ€ãƒ¡ãƒ¼ã‚¸
+            int a;      //0F‰ñ•œ 1F‰ñ•œ–ò“üè 2FƒS[ƒ‹ƒh“üè 3Fí“¬ˆ— 4F‘S‘Ì‚Éƒ_ƒ[ƒW
             int g;
             int blood;
             switch (index)
@@ -1273,14 +1274,14 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
                         }
                     }
                     gotoxy(60, 27);
-                    printf("å…¨ã¦ã®ã‚­ãƒ£ãƒ©ãŒå›å¾©ã—ãŸï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                    printf("‘S‚Ä‚ÌƒLƒƒƒ‰‚ª‰ñ•œ‚µ‚½IENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                     rewind(stdin);
                     getchar();
                     return;
                 case 1:
                     player->potionNum += 1;
                     gotoxy(60, 27);
-                    printf("å›å¾©è–¬ã‚’å…¥æ‰‹ã—ãŸï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                    printf("‰ñ•œ–ò‚ğ“üè‚µ‚½IENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                     rewind(stdin);
                     getchar();
                     return;
@@ -1289,7 +1290,7 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
                     g = rand() % 15 + 5;
                     player->gold += g;
                     gotoxy(60, 27);
-                    printf("%d Gã‚’å…¥æ‰‹ã—ãŸï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...",g);
+                    printf("%d G‚ğ“üè‚µ‚½IENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...",g);
                     rewind(stdin);
                     getchar();
                     return;
@@ -1305,7 +1306,7 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
                         (status + i)->hp -= blood;
                     }
                     gotoxy(60, 27);
-                    printf("æ¯’ã‚¬ã‚¹ï¼å…¨ã¦ã®ã‚­ãƒ£ãƒ©ã‚’%dç‚¹å—ã‘ã‚‰ã‚ŒãŸï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...", blood);
+                    printf("“ÅƒKƒXI‘S‚Ä‚ÌƒLƒƒƒ‰‚ğ%d“_ó‚¯‚ç‚ê‚½IENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...", blood);
                     rewind(stdin);
                     getchar();
                     return;
@@ -1324,9 +1325,9 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
     }
 }
 
-//æ•µã®å±‹ã®å‡¦ç†
+//“G‚Ì‰®‚Ìˆ—
 void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
-    logs("ãªã‚“ã‹å¤‰ãªæ¯ãŒã‚ã‚‹\n");
+    logs("‚È‚ñ‚©•Ï‚È‘§‚ª‚ ‚é\n");
     logsRead();
     gotoxy(wherex(), wherey());
     msleep(500);
@@ -1337,12 +1338,12 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
     printf(".");
     msleep(1000);
     clrscr();
-    int index = 0;      //0ï¼šæˆ¦ã† 1ï¼šçŠ¶æ³ç¢ºèª 2ï¼šé€ƒã’ã‚‹
-    char KATAGANA[512][3] = { "ã‚¢", "ã‚¤", "ã‚¦", "ã‚¨", "ã‚ª", "ã‚«", "ã‚­", "ã‚¯", "ã‚±", "ã‚³", "ã‚µ", "ã‚·", "ã‚¹", "ã‚»", "ã‚½", "ã‚¿", "ãƒ", "ãƒ„", "ãƒ†", "ãƒˆ", "ãƒŠ", "ãƒ‹", "ãƒŒ", "ãƒ", "ãƒ", "ãƒ", "ãƒ’", "ãƒ•", "ãƒ˜", "ãƒ›", "ãƒ", "ãƒŸ", "ãƒ ", "ãƒ¡", "ãƒ¢", "ãƒ¤", "ãƒ¦", "ãƒ¨", "ãƒ©", "ãƒª", "ãƒ«", "ãƒ¬", "ãƒ­", "ãƒ¯", "ãƒ²", "ãƒ³", "ã‚¬", "ã‚®", "ã‚°", "ã‚²", "ã‚´", "ã‚¶", "ã‚¸", "ã‚º", "ã‚¼", "ã‚¾", "ãƒ€", "ã‚¸", "ãƒ…", "ãƒ‡", "ãƒ‰", "ãƒ","ãƒ“", "ãƒ–", "ãƒ™", "ãƒœ", "ãƒ‘", "ãƒ”", "ãƒ—", "ãƒš", "ãƒ" };
+    int index = 0;      //0Fí‚¤ 1Fó‹µŠm”F 2F“¦‚°‚é
+    char KATAGANA[512][3] = { "ƒA", "ƒC", "ƒE", "ƒG", "ƒI", "ƒJ", "ƒL", "ƒN", "ƒP", "ƒR", "ƒT", "ƒV", "ƒX", "ƒZ", "ƒ\", "ƒ^", "ƒ`", "ƒc", "ƒe", "ƒg", "ƒi", "ƒj", "ƒk", "ƒl", "ƒm", "ƒn", "ƒq", "ƒt", "ƒw", "ƒz", "ƒ}", "ƒ~", "ƒ€", "ƒ", "ƒ‚", "ƒ„", "ƒ†", "ƒˆ", "ƒ‰", "ƒŠ", "ƒ‹", "ƒŒ", "ƒ", "ƒ", "ƒ’", "ƒ“", "ƒK", "ƒM", "ƒO", "ƒQ", "ƒS", "ƒU", "ƒW", "ƒY", "ƒ[", "ƒ]", "ƒ_", "ƒW", "ƒd", "ƒf", "ƒh", "ƒo","ƒr", "ƒu", "ƒx", "ƒ{", "ƒp", "ƒs", "ƒv", "ƒy", "ƒ|" };
     srand(time(NULL));
     int num = rand() % 10 + 1;
     strcpy(enemy->name, "");
-    //ã‚«ã‚¿ã‚«ãƒŠã®æ•µåã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«ç”Ÿæˆã™ã‚‹
+    //ƒJƒ^ƒJƒi‚Ì“G–¼‚ğƒ‰ƒ“ƒ_ƒ€‚É¶¬‚·‚é
     for (int i = 0; i < num; i++)
     {
         int roll = rand() % 71;
@@ -1386,24 +1387,24 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
         for (int i = 3; i < 30; i++)
         {
             gotoxy(1, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 3; i < 30; i++)
         {
             gotoxy(56, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(1, 2);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(1, 30);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(2, 3);
-        printf("ã‚ï¼ã‚„ã›ã„ã®  ");
+        printf("‚ I‚â‚¹‚¢‚Ì  ");
         textattr(0x0A);
         printf("%s ", enemy->name);
         textattr(0x0F);
         gotoxy(2, 4);
-        printf("ãŒã¨ã³ã ã—ã¦ããŸï¼");
+        printf("‚ª‚Æ‚Ñ‚¾‚µ‚Ä‚«‚½I");
         gotoxy(3, 6);
         printf("HP/MAXHP: %d/%d\n", enemy->hp, enemy->maxHp);
         gotoxy(3, 7);
@@ -1420,17 +1421,17 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
         for (int i = 10; i < 25; i++)
         {
             gotoxy(70, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 10; i < 25; i++)
         {
             gotoxy(110, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(70, 9);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(70, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         
         int j = 0;
         for (int i = 0; i < G_status; i++)
@@ -1441,6 +1442,9 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
             }
             if (j == G_status)
             {
+                stopsound(BGM);
+                closesound(BGM);
+                playsound(DEAD, 0);
                 clrscr();
                 gotoxy(55, 15);
                 printf("GAME OVER");
@@ -1452,39 +1456,39 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
         }
 
         gotoxy(87, 12);
-        printf("ã©ã†ã™ã‚‹ï¼Ÿ");
+        printf("‚Ç‚¤‚·‚éH");
         switch (index)
         {
         case 0:
             gotoxy(87, 15);
             textattr(0x70);
-            printf("ãŸãŸã‹ã†");
+            printf("‚½‚½‚©‚¤");
             textattr(0x0F);
             gotoxy(84, 17);
-            printf("çŠ¶æ³ã‚’ç¢ºèªã™ã‚‹");
+            printf("ó‹µ‚ğŠm”F‚·‚é");
             gotoxy(88, 19);
-            printf("ã«ã’ã‚‹");
+            printf("‚É‚°‚é");
             rewind(stdin);
             break;
         case 1:
             gotoxy(87, 15);            
-            printf("ãŸãŸã‹ã†");           
+            printf("‚½‚½‚©‚¤");           
             textattr(0x70);
             gotoxy(84, 17);
-            printf("çŠ¶æ³ã‚’ç¢ºèªã™ã‚‹");
+            printf("ó‹µ‚ğŠm”F‚·‚é");
             textattr(0x0F);
             gotoxy(88, 19);
-            printf("ã«ã’ã‚‹");
+            printf("‚É‚°‚é");
             rewind(stdin);
             break;
         case 2:
             gotoxy(87, 15);            
-            printf("ãŸãŸã‹ã†");            
+            printf("‚½‚½‚©‚¤");            
             gotoxy(84, 17);
-            printf("çŠ¶æ³ã‚’ç¢ºèªã™ã‚‹");
+            printf("ó‹µ‚ğŠm”F‚·‚é");
             textattr(0x70);
             gotoxy(88, 19);
-            printf("ã«ã’ã‚‹");
+            printf("‚É‚°‚é");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -1539,7 +1543,7 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
                 {
                     (status + rand() % G_status)->hp -= enemy->atk;
                 }                
-                logs("é€ƒã’ãŸ...ç—›ã„...\n");
+                logs("“¦‚°‚½...’É‚¢...\n");
                 clrscr();
                 return;
             default:
@@ -1559,44 +1563,44 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
                 for (int i = 6; i < 25; i++)
                 {
                     gotoxy(45, i);
-                    printf("â”ƒ");
+                    printf("„«");
                 }
                 for (int i = 6; i < 25; i++)
                 {
                     gotoxy(72, i);
-                    printf("â”ƒ");
+                    printf("„«");
                 }
                 gotoxy(45, 5);
-                printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+                printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
                 gotoxy(45, 25);
-                printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+                printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
                 gotoxy(47, 7);
                 printf("%s", enemy->name);
                 gotoxy(47, 8);
-                printf("ã¯å›ã®å¼·ã•ã«æ„Ÿå‹•ã•ã›ãŸ");
+                printf("‚ÍŒN‚Ì‹­‚³‚ÉŠ´“®‚³‚¹‚½");
                 gotoxy(47, 10);
-                printf("å›ã®ãƒãƒ¼ãƒ ã«å‚åŠ ã—ãŸã„");
+                printf("ŒN‚Ìƒ`[ƒ€‚ÉQ‰Á‚µ‚½‚¢");
                 gotoxy(47, 12);
-                printf("é›‡ã†ã‹ï¼Ÿ");
+                printf("ŒÙ‚¤‚©H");
                 gotoxy(47, 20);
-                printf("%d Gã‚’å…¥æ‰‹ã—ãŸï¼", g);
+                printf("%d G‚ğ“üè‚µ‚½I", g);
                 switch (index)
                 {
                 case 0:
                     gotoxy(53, 15);
                     textattr(0x70);
-                    printf("ã¯ã„");
+                    printf("‚Í‚¢");
                     textattr(0x0F);
                     gotoxy(53, 17);
-                    printf("ã„ã„ãˆ");
+                    printf("‚¢‚¢‚¦");
                     rewind(stdin);
                     break;
                 case 1:
                     gotoxy(53, 15);
-                    printf("ã¯ã„");
+                    printf("‚Í‚¢");
                     gotoxy(53, 17);
                     textattr(0x70);
-                    printf("ã„ã„ãˆ");
+                    printf("‚¢‚¢‚¦");
                     textattr(0x0F);
                     rewind(stdin);
                     break;
@@ -1631,9 +1635,9 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
                         while (G_status >= MAX_STATUS)
                         {
                             gotoxy(35, 27);
-                            printf("ã‚ãªãŸã®ã‚­ãƒ£ãƒ©ã¯å¤šã™ãã‚‹ã€‚ä¸€åã‚’è§£é›‡ã—ã¦ãã ã•ã„ã€‚");
+                            printf("‚ ‚È‚½‚ÌƒLƒƒƒ‰‚Í‘½‚·‚¬‚éBˆê–¼‚ğ‰ğŒÙ‚µ‚Ä‚­‚¾‚³‚¢B");
                             gotoxy(35, 28);
-                            printf("ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                            printf("ENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                             rewind(stdin);
                             getchar();
                             charaOutput(status, player);
@@ -1649,9 +1653,9 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
                         (status + G_status)->maxHp = enemy->maxHp;
                         G_status += 1;
                         gotoxy(60, 27);
-                        printf("%sã¯åŠ å…¥ã—ãŸï¼", enemy->name);
+                        printf("%s‚Í‰Á“ü‚µ‚½I", enemy->name);
                         gotoxy(60, 28);
-                        printf("ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                        printf("ENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                         rewind(stdin);
                         getchar();
                         return;
@@ -1668,9 +1672,9 @@ void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
     }
 }
 
-//bossã®å±‹ã®å‡¦ç†
+//boss‚Ì‰®‚Ìˆ—
 void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
-    logs("ã“ã®ã¨ã“ã‚ã¯ã€å±é™ºãªæ¯ãŒã‚ã‚‹\n");
+    logs("‚±‚Ì‚Æ‚±‚ë‚ÍAŠëŒ¯‚È‘§‚ª‚ ‚é\n");
     textattr(0x0C);
     logsRead();
     gotoxy(wherex(), wherey());
@@ -1690,17 +1694,17 @@ void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
         for (int i = 3; i < 30; i++)
         {
             gotoxy(1, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 3; i < 30; i++)
         {
             gotoxy(56, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(1, 2);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(1, 30);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(2, 3);
         printf("%s ", boss->name);
         gotoxy(3, 6);
@@ -1716,21 +1720,21 @@ void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
         gotoxy(3, 11);
         printf("CRI: %d\n\n", boss->cri);
         gotoxy(2, 15);
-        printf("ã“ã“ã«æ¥ãŸã®ã¯ã€ã‚ˆãã§ããŸ...");
+        printf("‚±‚±‚É—ˆ‚½‚Ì‚ÍA‚æ‚­‚Å‚«‚½...");
         for (int i = 10; i < 25; i++)
         {
             gotoxy(70, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 10; i < 25; i++)
         {
             gotoxy(110, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(70, 9);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(70, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         
         int j = 0;
         for (int i = 0; i < G_status; i++)
@@ -1741,9 +1745,12 @@ void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
             }
             if (j == G_status)
             {
+                stopsound(BGM);
+                closesound(BGM);
+                playsound(DEAD, 0);
                 clrscr();
                 gotoxy(45, 15);
-                printf("å›ã€ã‚‚ã£ã¨å¼·ããªã‘ã‚Œã°ãªã‚‰ãªã„ï¼");
+                printf("ŒNA‚à‚Á‚Æ‹­‚­‚È‚¯‚ê‚Î‚È‚ç‚È‚¢I");
                 getchar();
                 clrscr();
                 for (int k = 0; k < G_status; k++)
@@ -1761,39 +1768,39 @@ void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
             }
         }
         gotoxy(87, 12);
-        printf("ã©ã†ã™ã‚‹ï¼Ÿ");
+        printf("‚Ç‚¤‚·‚éH");
         switch (index)
         {
         case 0:
             gotoxy(87, 15);
             textattr(0x70);
-            printf("ãŸãŸã‹ã†");
+            printf("‚½‚½‚©‚¤");
             textattr(0x0F);
             gotoxy(84, 17);
-            printf("çŠ¶æ³ã‚’ç¢ºèªã™ã‚‹");
+            printf("ó‹µ‚ğŠm”F‚·‚é");
             gotoxy(88, 19);
-            printf("ã«ã’ã‚‹");
+            printf("‚É‚°‚é");
             rewind(stdin);
             break;
         case 1:
             gotoxy(87, 15);
-            printf("ãŸãŸã‹ã†");
+            printf("‚½‚½‚©‚¤");
             textattr(0x70);
             gotoxy(84, 17);
-            printf("çŠ¶æ³ã‚’ç¢ºèªã™ã‚‹");
+            printf("ó‹µ‚ğŠm”F‚·‚é");
             textattr(0x0F);
             gotoxy(88, 19);
-            printf("ã«ã’ã‚‹");
+            printf("‚É‚°‚é");
             rewind(stdin);
             break;
         case 2:
             gotoxy(87, 15);
-            printf("ãŸãŸã‹ã†");
+            printf("‚½‚½‚©‚¤");
             gotoxy(84, 17);
-            printf("çŠ¶æ³ã‚’ç¢ºèªã™ã‚‹");
+            printf("ó‹µ‚ğŠm”F‚·‚é");
             textattr(0x70);
             gotoxy(88, 19);
-            printf("ã«ã’ã‚‹");
+            printf("‚É‚°‚é");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -1860,13 +1867,13 @@ void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
                 boss->hp = boss->maxHp;
             }
             gotoxy(55, 15);
-            printf("ã‚ˆã...");
+            printf("‚æ‚­...");
             msleep(500);
-            printf("ã§");
+            printf("‚Å");
             msleep(500);
-            printf("ã");
+            printf("‚«");
             msleep(500);
-            printf("ãŸ");
+            printf("‚½");
             msleep(1000);
             rewind(stdin);           
             getchar();
@@ -1883,9 +1890,9 @@ void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
 
 }
 
-//éšæ®µã®å‡¦ç†
+//ŠK’i‚Ìˆ—
 void nextFloorRoom(PLAYER* player, MAPS* map, STATUS* status) {
-    logs("éšæ®µã‚’è¦‹ã¤ã‹ã‚Šã¾ã—ãŸ\n");
+    logs("ŠK’i‚ğŒ©‚Â‚©‚è‚Ü‚µ‚½\n");
     logsRead();
     gotoxy(wherex(), wherey());
     msleep(500);
@@ -1903,42 +1910,42 @@ void nextFloorRoom(PLAYER* player, MAPS* map, STATUS* status) {
         for (int i = 6; i < 25; i++)
         {
             gotoxy(45, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 6; i < 25; i++)
         {
             gotoxy(72, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(45, 5);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(45, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(53, 7);
-        printf("éšæ®µã‚’ä¸Šã‚‹ã‹ï¼Ÿ");
+        printf("ŠK’i‚ğã‚é‚©H");
         gotoxy(54, 8);
-        printf("(æˆ»ã‚‹ä¸å¯)");
+        printf("(–ß‚é•s‰Â)");
         gotoxy(51, 10);
-        printf("(æˆ¦é—˜ä¸èƒ½ã®ã‚­ãƒ£ãƒ©ã¯");
+        printf("(í“¬•s”\‚ÌƒLƒƒƒ‰‚Í");
         gotoxy(52, 11);
-        printf("ãƒãƒ¼ãƒ ã‹ã‚‰é€€å‡ºï¼‰");
+        printf("ƒ`[ƒ€‚©‚ç‘Şoj");
         switch (index)
         {
         case 0:
             gotoxy(53, 16);
             textattr(0x70);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             textattr(0x0F);
             gotoxy(53, 18);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             rewind(stdin);
             break;
         case 1:
             gotoxy(53, 16);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             gotoxy(53, 18);
             textattr(0x70);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -2024,15 +2031,15 @@ void nextFloorRoom(PLAYER* player, MAPS* map, STATUS* status) {
     }
 }
 
-//ã‚­ãƒ£ãƒ©ã‚’å…¥åŠ›ã™ã‚‹
+//ƒLƒƒƒ‰‚ğ“ü—Í‚·‚é
 void charaInput(STATUS* status) {
     clrscr();
     while (G_status >= MAX_STATUS)
     {
         gotoxy(35, 10);
-        printf("ã‚ãªãŸã®ã‚­ãƒ£ãƒ©ã¯å¤šã™ãã‚‹ã€‚ä¸€åã‚’è§£é›‡ã—ã¦ãã ã•ã„ã€‚");
+        printf("‚ ‚È‚½‚ÌƒLƒƒƒ‰‚Í‘½‚·‚¬‚éBˆê–¼‚ğ‰ğŒÙ‚µ‚Ä‚­‚¾‚³‚¢B");
         gotoxy(35, 12);
-        printf("ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+        printf("ENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
         rewind(stdin);
         getchar();
         charaOutput(status, player);
@@ -2045,7 +2052,7 @@ void charaInput(STATUS* status) {
         cmp = 0;
         clrscr();
         gotoxy(1, 1);
-        printf("ã‚­ãƒ£ãƒ©ã®åå‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„>>(å…¨è§’32å­—ä»¥å†…ã€åŠè§’è‹±æ•°å­—64å­—ä»¥å†…)");
+        printf("ƒLƒƒƒ‰‚Ì–¼‘O‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢>>(‘SŠp32šˆÈ“àA”¼Šp‰p”š64šˆÈ“à)");
         rewind(stdin);
         scanf("%s", (status + G_status)->name);
         for (int i = 0; i < G_status; i++)
@@ -2053,7 +2060,7 @@ void charaInput(STATUS* status) {
             if (strcmp((status + G_status)->name, (status + i)->name) == 0)
             {
                 cmp = 1;
-                printf("\n%sã¯ã‚‚ã†å›ã®ãƒãƒ¼ãƒ ã«ã„ã‚‹", (status + G_status)->name);
+                printf("\n%s‚Í‚à‚¤ŒN‚Ìƒ`[ƒ€‚É‚¢‚é", (status + G_status)->name);
                 rewind(stdin);
                 getchar();
             }
@@ -2061,10 +2068,10 @@ void charaInput(STATUS* status) {
         
     } while (cmp == 1);
     
-    if (strcmp((status + G_status)->name, "Dungeonã®å®ˆè­·è€…Â·ã‚®ãƒ«ã‚¬ãƒ¡ãƒƒã‚·ãƒ¥Â·ãƒ«ã‚¤ãƒ¼ãƒ€") == 0)
+    if (strcmp((status + G_status)->name, "Dungeon‚ÌçŒìÒEƒMƒ‹ƒKƒƒbƒVƒ…Eƒ‹ƒC[ƒ_") == 0)
     {
-        printf("æ®‹å¿µ...ã“ã‚Œã¯ãƒ€ãƒ¡ã \n");
-        strcat((status + G_status)->name, "(å½)");
+        printf("c”O...‚±‚ê‚Íƒ_ƒ‚¾\n");
+        strcat((status + G_status)->name, "(‹U)");
         (status + G_status)->hp = 100;
         (status + G_status)->atk = 20;
         (status + G_status)->def = 10;
@@ -2077,7 +2084,7 @@ void charaInput(STATUS* status) {
     }
     else if (strcmp((status + G_status)->name, "CHLOE") == 0)
     {
-        printf("\néš ã•ã‚ŒãŸã‚­ãƒ£ãƒ©ã‚’æ‰‹ã«å…¥ã‚ŒãŸãŠã‚ã§ã¨ã†...\n");
+        printf("\n‰B‚³‚ê‚½ƒLƒƒƒ‰‚ğè‚É“ü‚ê‚½‚¨‚ß‚Å‚Æ‚¤...\n");
         (status + G_status)->hp = 299;
         (status + G_status)->atk = 99;
         (status + G_status)->def = 39;
@@ -2117,7 +2124,7 @@ void charaInput(STATUS* status) {
         (status + G_status)->isBattle = 0;
         (status + G_status)->maxHp = (status + G_status)->hp;
     }
-    printf("ã‚­ãƒ£ãƒ©ä½œæˆä¸­.");
+    printf("ƒLƒƒƒ‰ì¬’†.");
     msleep(500);
     printf(".");
     msleep(500);
@@ -2130,13 +2137,13 @@ void charaInput(STATUS* status) {
     printf("SPD: %d\n", (status + G_status)->spd);
     printf("EVA: %d\n", (status + G_status)->eva);
     printf("CRI: %d\n\n", (status + G_status)->cri);
-    printf("ä½œæˆå®Œäº†ï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+    printf("ì¬Š®—¹IENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
     G_status += 1;
     rewind(stdin);
     getchar();
 }
 
-//ã‚­ãƒ£ãƒ©ã‚’å‡ºåŠ›ã™ã‚‹
+//ƒLƒƒƒ‰‚ğo—Í‚·‚é
 void charaOutput(STATUS* status, PLAYER* player) {
     clrscr();
     int index = 0;
@@ -2156,28 +2163,28 @@ void charaOutput(STATUS* status, PLAYER* player) {
         for (int i = 3; i < 30; i++)
         {
             gotoxy(5, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(5, 2);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(5, 30);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         for (int i = 3; i < 30; i++)
         {
             gotoxy(60, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 3; i < 30; i++)
         {
             gotoxy(115, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(60, 2);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(60, 30);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(5, 1);
-        printf("ãŠé‡‘ï¼š%d G", player->gold);
+        printf("‚¨‹àF%d G", player->gold);
 
         for (int i = 0; i < G_status; i++)
         {
@@ -2194,76 +2201,76 @@ void charaOutput(STATUS* status, PLAYER* player) {
         case 0:
             gotoxy(65, 20);
             textattr(0x70);
-            printf("å›å¾©è–¬ã‚’ä½¿ã†");
+            printf("‰ñ•œ–ò‚ğg‚¤");
             textattr(0x0F);
             gotoxy(85, 20);
-            printf("å‡ºæˆ¦");
+            printf("oí");
             gotoxy(95, 20);
-            printf("è§£é›‡");
+            printf("‰ğŒÙ");
             gotoxy(65, 21);
-            printf("(æ®‹ã‚Šã¯ï¼š%d)", player->potionNum);
+            printf("(c‚è‚ÍF%d)", player->potionNum);
             gotoxy(83, 21);
             if ((status + index)->isBattle == 0)
             {
-                printf("(ä¼‘æ†©ä¸­)");
+                printf("(‹xŒe’†)");
             }
             if ((status + index)->isBattle == 1)
             {
-                printf("(å‡ºæˆ¦ä¸­)");
+                printf("(oí’†)");
             }
             if ((status + index)->isBattle == 2)
             {
-                printf("(æˆ¦é—˜ä¸èƒ½)");
+                printf("(í“¬•s”\)");
             }
             break;
         case 1:
             gotoxy(65, 20);
-            printf("å›å¾©è–¬ã‚’ä½¿ã†");
+            printf("‰ñ•œ–ò‚ğg‚¤");
             textattr(0x70);
             gotoxy(85, 20);
-            printf("å‡ºæˆ¦");
+            printf("oí");
             textattr(0x0F);
             gotoxy(95, 20);
-            printf("è§£é›‡");
+            printf("‰ğŒÙ");
             gotoxy(65, 21);
-            printf("(æ®‹ã‚Šã¯ï¼š%d)", player->potionNum);
+            printf("(c‚è‚ÍF%d)", player->potionNum);
             gotoxy(83, 21);
             if ((status + index)->isBattle == 0)
             {
-                printf("(ä¼‘æ†©ä¸­)");
+                printf("(‹xŒe’†)");
             }
             if ((status + index)->isBattle == 1)
             {
-                printf("(å‡ºæˆ¦ä¸­)");
+                printf("(oí’†)");
             }
             if ((status + index)->isBattle == 2)
             {
-                printf("(æˆ¦é—˜ä¸èƒ½)");
+                printf("(í“¬•s”\)");
             }
             break;
         case 2:
             gotoxy(65, 20);
-            printf("å›å¾©è–¬ã‚’ä½¿ã†");
+            printf("‰ñ•œ–ò‚ğg‚¤");
             gotoxy(85, 20);
-            printf("å‡ºæˆ¦");
+            printf("oí");
             textattr(0x70);
             gotoxy(95, 20);
-            printf("è§£é›‡");
+            printf("‰ğŒÙ");
             textattr(0x0F);
             gotoxy(65, 21);
-            printf("(æ®‹ã‚Šã¯ï¼š%d)", player->potionNum);
+            printf("(c‚è‚ÍF%d)", player->potionNum);
             gotoxy(83, 21);
             if ((status + index)->isBattle == 0)
             {
-                printf("(ä¼‘æ†©ä¸­)");
+                printf("(‹xŒe’†)");
             }
             if ((status + index)->isBattle == 1)
             {
-                printf("(å‡ºæˆ¦ä¸­)");
+                printf("(oí’†)");
             }
             if ((status + index)->isBattle == 2)
             {
-                printf("(æˆ¦é—˜ä¸èƒ½)");
+                printf("(í“¬•s”\)");
             }
             break;
         default:
@@ -2317,14 +2324,14 @@ void charaOutput(STATUS* status, PLAYER* player) {
                 if ((status + index)->hp == (status + index)->maxHp)
                 {
                     gotoxy(62, 23);
-                    printf("å›å¾©è–¬ã‚’ä½¿ã†å¿…è¦ã¯ãªã„ï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                    printf("‰ñ•œ–ò‚ğg‚¤•K—v‚Í‚È‚¢IENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                     rewind(stdin);
                     getchar();
                 }
                 else if (player->potionNum == 0) 
                 {
                     gotoxy(62, 23);
-                    printf("å›å¾©è–¬ãŒãªã„ï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                    printf("‰ñ•œ–ò‚ª‚È‚¢IENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                     rewind(stdin);
                     getchar();
                 }
@@ -2346,6 +2353,14 @@ void charaOutput(STATUS* status, PLAYER* player) {
                 }
                 break;
             case 2:
+                if (G_status == 1)
+                {
+                    gotoxy(62, 23);
+                    printf("‚¾‚ßIENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
+                    rewind(stdin);
+                    getchar();
+                    break;
+                }
                 for (int i = index; i < G_status; i++)
                 {
                     *(status + i) = *(status + i + 1);
@@ -2379,7 +2394,7 @@ void charaOutput(STATUS* status, PLAYER* player) {
     }
 }
 
-//æˆ¦é—˜å‡¦ç†1
+//í“¬ˆ—1
 void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
     int t = 0;
     for (int i = 0; i < G_status; i++)
@@ -2392,7 +2407,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
         if (i == (G_status - 1) && (status + i)->isBattle == 0)
         {
             gotoxy(72, 27);
-            printf("å‡ºæˆ¦ã®ã‚­ãƒ£ãƒ©ã‚’é¸æŠã—ã¦ãã ã•ã„ï¼");
+            printf("oí‚ÌƒLƒƒƒ‰‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢I");
             return;
         }       
     }
@@ -2400,11 +2415,11 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
     reinport();
 
     gotoxy(31, 3);
-    printf("æˆ¦é—˜é–‹å§‹ï¼");
+    printf("í“¬ŠJnI");
     if ((status + t)->spd >= enemy->spd)
     {
         gotoxy(31, 5);
-        printf("%sã®å…ˆæ”»ï¼", (status + t)->name);
+        printf("%s‚ÌæUI", (status + t)->name);
         while (1)
         {
             battleS(status + t, enemy);
@@ -2412,7 +2427,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
             if ((status + t)->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
-                printf("æˆ¦é—˜å¤±æ•—...ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("í“¬¸”s...ENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 (status + t)->isBattle = 2;
                 rewind(stdin);
                 getchar();
@@ -2422,7 +2437,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
             if (enemy->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
-                printf("æˆ¦é—˜å‹åˆ©ï¼ï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("í“¬Ÿ—˜IIENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 rewind(stdin);
                 getchar();
                 clrscr();
@@ -2433,7 +2448,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
             if ((status + t)->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
-                printf("æˆ¦é—˜å¤±æ•—...ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("í“¬¸”s...ENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 (status + t)->isBattle = 2;
                 rewind(stdin);
                 getchar();
@@ -2443,7 +2458,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
             if (enemy->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
-                printf("æˆ¦é—˜å‹åˆ©ï¼ï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("í“¬Ÿ—˜IIENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 rewind(stdin);
                 getchar();
                 clrscr();
@@ -2454,7 +2469,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
     if ((status + t)->spd < enemy->spd)
     {
         gotoxy(31, 5);
-        printf("%sã®å…ˆæ”»ï¼", enemy->name);
+        printf("%s‚ÌæUI", enemy->name);
         while (1)
         {
             battleS(enemy, status + t);            
@@ -2462,7 +2477,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
             if ((status + t)->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
-                printf("æˆ¦é—˜å¤±æ•—...ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("í“¬¸”s...ENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 (status + t)->isBattle = 2;
                 rewind(stdin);
                 getchar();
@@ -2472,7 +2487,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
             if (enemy->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
-                printf("æˆ¦é—˜å‹åˆ©ï¼ï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("í“¬Ÿ—˜IIENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 rewind(stdin);
                 getchar();
                 clrscr();
@@ -2483,7 +2498,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
             if ((status + t)->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
-                printf("æˆ¦é—˜å¤±æ•—...ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("í“¬¸”s...ENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 (status + t)->isBattle = 2;
                 rewind(stdin);
                 getchar();
@@ -2493,7 +2508,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
             if (enemy->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
-                printf("æˆ¦é—˜å‹åˆ©ï¼ï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+                printf("í“¬Ÿ—˜IIENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
                 rewind(stdin);
                 getchar();
                 clrscr();
@@ -2503,11 +2518,11 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
     }
 }
 
-//æˆ¦é—˜å‡¦ç†2
+//í“¬ˆ—2
 void battleS(STATUS* status, STATUS* enemy) {
     srand(time(NULL));
     gotoxy(31, wherey() + 1);
-    printf("%sã® æ”»æ’ƒï¼", status->name);
+    printf("%s‚Ì UŒ‚I", status->name);
     if (rand() % 100 < enemy->eva) 
     {
         gotoxy(31, wherey() + 1);
@@ -2520,20 +2535,20 @@ void battleS(STATUS* status, STATUS* enemy) {
         {
             int damage = (status->atk) * 2 - (enemy->def);
             gotoxy(31, wherey() + 1);           
-            printf("ä¼šå¿ƒã®ä¸€æ’ƒï¼ï¼");
+            printf("‰ïS‚ÌˆêŒ‚II");
             gotoxy(31, wherey() + 1);
-            printf("%s ã«%dã®ãƒ€ãƒ¡ãƒ¼ã‚¸ï¼ï¼", enemy->name, damage);
+            printf("%s ‚É%d‚Ìƒ_ƒ[ƒWII", enemy->name, damage);
             enemy->hp -= damage;
             if (enemy->hp <= 0)
             {
                 enemy->hp = 0;
                 gotoxy(31, wherey() + 1);
-                printf("%s ã¯æ¯çµ¶ãˆãŸï¼ï¼ï¼", enemy->name);
+                printf("%s ‚Í‘§â‚¦‚½DDD", enemy->name);
             }
             else
             {
                 gotoxy(31, wherey() + 1);
-                printf("%s ã®æ®‹ã‚ŠHPã¯%d\n", enemy->name, enemy->hp);
+                printf("%s ‚Ìc‚èHP‚Í%d\n", enemy->name, enemy->hp);
             }            
         }
         else
@@ -2544,25 +2559,25 @@ void battleS(STATUS* status, STATUS* enemy) {
                 damage = 0;
             }
             gotoxy(31, wherey() + 1);
-            printf("%s ã«%dã®ãƒ€ãƒ¡ãƒ¼ã‚¸ï¼ï¼", enemy->name, damage);
+            printf("%s ‚É%d‚Ìƒ_ƒ[ƒWII", enemy->name, damage);
             enemy->hp -= damage;
             if (enemy->hp <= 0)
             {
                 enemy->hp = 0;
                 gotoxy(31, wherey() + 1);
-                printf("%s ã¯æ¯çµ¶ãˆãŸï¼ï¼ï¼", enemy->name);
+                printf("%s ‚Í‘§â‚¦‚½DDD", enemy->name);
             }
             else
             {
                 gotoxy(31, wherey() + 1);
-                printf("%s ã®æ®‹ã‚ŠHPã¯%d\n", enemy->name, enemy->hp);
+                printf("%s ‚Ìc‚èHP‚Í%d\n", enemy->name, enemy->hp);
             }
         }
     }
 
 }
 
-//ã‚»ãƒ¼ãƒ–ã‚²ãƒ¼ãƒ 
+//ƒZ[ƒuƒQ[ƒ€
 void saveGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     unsigned char status_count = G_status;
     FILE* fp = fopen("charaters.bin", "wb");
@@ -2589,7 +2604,7 @@ void saveGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     fclose(fp4);
 
     gotoxy(60, 27);
-    printf("ä¿å­˜ä¸­");
+    printf("•Û‘¶’†");
     msleep(500);
     printf(".");
     msleep(500);
@@ -2597,13 +2612,13 @@ void saveGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     msleep(500);
     printf(".");
     msleep(1000);
-    printf("æˆåŠŸï¼ï¼ENTERã‚’æŠ¼ã—ã¦ãã ã•ã„...");
+    printf("¬Œ÷IIENTER‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢...");
     rewind(stdin);
     getchar();
     clrscr();
 }
 
-//ãƒ­ãƒ¼ãƒ‰ã‚²ãƒ¼ãƒ 
+//ƒ[ƒhƒQ[ƒ€
 void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     fopen("logs.txt", "w");
     unsigned char status_count = G_status;
@@ -2611,7 +2626,7 @@ void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     if (fp == NULL)
     {
         gotoxy(70, 17);
-        printf("ï¼ˆã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ï¼‰\n");
+        printf("iƒA[ƒJƒCƒu‚ª‚ ‚è‚Ü‚¹‚ñBj\n");
         return;
     }
     else
@@ -2625,7 +2640,7 @@ void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     FILE* fp1 = fopen("player.bin", "rb");
     if (fp1 == NULL)
     {
-        //printf("player.binãŒã‚ã‚Šã¾ã›ã‚“ã€‚\n");
+        //printf("player.bin‚ª‚ ‚è‚Ü‚¹‚ñB\n");
     }
     else
     {
@@ -2636,7 +2651,7 @@ void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     FILE* fp2 = fopen("floor.bin", "rb");
     if (fp2 == NULL)
     {
-        //printf("floor.binãŒã‚ã‚Šã¾ã›ã‚“ã€‚\n");
+        //printf("floor.bin‚ª‚ ‚è‚Ü‚¹‚ñB\n");
     }
     else
     {
@@ -2662,7 +2677,7 @@ void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     FILE* fp3 = fopen("maps.bin", "rb");
     if (fp3 == NULL)
     {
-        //printf("maps.binãŒã‚ã‚Šã¾ã›ã‚“ã€‚\n");
+        //printf("maps.bin‚ª‚ ‚è‚Ü‚¹‚ñB\n");
         //return;
     }
     else
@@ -2694,7 +2709,7 @@ void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     getchar();
 }
 
-//ã‚²ãƒ¼ãƒ çµ‚äº†ã®å‡¦ç†
+//ƒQ[ƒ€I—¹‚Ìˆ—
 void endGame() {
     clrscr();
     int index = 0;
@@ -2704,38 +2719,38 @@ void endGame() {
         for (int i = 6; i < 25; i++)
         {
             gotoxy(45, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         for (int i = 6; i < 25; i++)
         {
             gotoxy(72, i);
-            printf("â”ƒ");
+            printf("„«");
         }
         gotoxy(45, 5);
-        printf("â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”“");
+        printf("„¬„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„­");
         gotoxy(45, 25);
-        printf("â”—â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”›");
+        printf("„¯„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„®");
         gotoxy(50, 7);
-        printf("ã‚²ãƒ¼ãƒ ã‚’çµ‚äº†ã•ã›ã¦");
+        printf("ƒQ[ƒ€‚ğI—¹‚³‚¹‚Ä");
         gotoxy(54, 8);
-        printf("ã„ã„ã§ã™ã‹ï¼Ÿ");
+        printf("‚¢‚¢‚Å‚·‚©H");
         switch (index)
         {
         case 0:
             gotoxy(53, 15);
             textattr(0x70);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             textattr(0x0F);
             gotoxy(53, 17);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             rewind(stdin);
             break;
         case 1:
             gotoxy(53, 15);
-            printf("ã¯ã„");
+            printf("‚Í‚¢");
             gotoxy(53, 17);
             textattr(0x70);
-            printf("ã„ã„ãˆ");
+            printf("‚¢‚¢‚¦");
             textattr(0x0F);
             rewind(stdin);
             break;
@@ -2780,7 +2795,7 @@ void endGame() {
 
 }
 
-//cursorã‚’éš ã•ã›ã¦
+//cursor‚ğ‰B‚³‚¹‚Ä
 void hideCursor() {
     CONSOLE_CURSOR_INFO cur;
     cur.dwSize = 1;

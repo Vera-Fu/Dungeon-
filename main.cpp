@@ -12,7 +12,7 @@
 #define MAX_LOGS 26
 #define MAX_STATUS 15
 
-//------------自定义结构体------------
+//------------構造体定義------------
 typedef enum {
     DISP_START = 0,
     DISP_LOAD,
@@ -20,94 +20,91 @@ typedef enum {
 }SCENE;
 
 typedef struct {
-    int x;
-    int y;
-    int potionNum;
-    int charaNum;
-    int gold;
+    int x;              //プレイヤーの座標x
+    int y;              //プレイヤーの座標y
+    int potionNum;      //回復薬の数
+    int gold;           //ゴールドの数
 }PLAYER;
 
 typedef struct {
-    int x;              //此区域的x坐标，同时也是玩家的x坐标
-    int y;              //此区域的y坐标，同时也是玩家的y坐标
-    int index;          //区域类型:1.商店 2.空房 3.回复房（免费） 4.招募房 5.随机房 6.战斗房 7.boss房 8.下一层楼梯 9.初始房
-    int isCheck;        //此区域是否已清除　0：未踏入 1：再踏入不可重新触发 2：再踏入可重新触发
-    int isUp;           //是否有向上的路
-    int isDown;         //是否有向下的路
-    int isLeft;         //是否有向左的路
-    int isRight;        //是否有向右的路
+    int x;              //この区域の座標x
+    int y;              //この区域の座標y
+    int index;          //区域タイプ:1.商店 2.何でもない 3.無料回復屋 4.募集屋 5.ランダム屋 6.敵の屋 7.bossの屋 8.階段 9.初めての屋
+    int isCheck;        //「この区域はクリアしたか？」の判定　0：まだ探索していない 1：繰り返すことは不可 2：繰り返すことは可
+    int isUp;           //「上に移動することができるか？」の判定
+    int isDown;         //「下に移動することができるか？」の判定
+    int isLeft;         //「左に移動することができるか？」の判定
+    int isRight;        //「右に移動することができるか？」の判定
 }MAPS;
 
 typedef struct {
-    char name[31];
-    int maxHp;
-    int hp;
-    int atk;
-    int def;
-    int spd;
-    int eva;
-    int cri;
+    char name[65];      //キャラの名前
+    int maxHp;          //キャラのhpの最大値
+    int hp;             //キャラのhp
+    int atk;            //キャラの攻撃力
+    int def;            //キャラの防衛力
+    int spd;            //キャラのスピード
+    int eva;            //キャラの回避率
+    int cri;            //キャラの会心率
     int isBattle;       //0は休憩中、1は出戦中、2は戦闘不能
 }STATUS;
 
 
-//------------声明结构体------------
-MAPS map[MAX_MAP];
-PLAYER player[1];
-STATUS status[MAX_STATUS];
-STATUS enemy[1];
+//------------構造体宣言------------
+MAPS map[MAX_MAP];      //マップのデータを保存する
+PLAYER player[1];       //プレイヤーのデータを保存する
+STATUS status[MAX_STATUS];      //キャラのデータを保存する
+STATUS enemy[1];        //敵のデータを保存する
+STATUS boss[1];         //bossのデータを保存する
 
-//------------全局变量声明------------
-int G_floor;
-int G_checkMapNum;
-int G_logs;
-int G_status;
+//------------グローバル変数宣言------------
+int G_floor;            //「今プレイヤーはどのレベルにいるか」の判定
+int G_checkMapNum;      //このレベルで探索した区域の数
+int G_logs;             //logsの行数
+int G_status;           //今持っているキャラの数
+char bgm[] = "The Kingdom.mp3";
+int BGM = opensound(bgm);
+char dead[] = "dead.mp3";
+int DEAD = opensound(dead);
 
-//------------函数声明------------
+//------------関数宣言------------
 void title();               //タイトル画面
-void menu();                //菜单界面
-void runGame();             //开始游戏
-void moveMent(PLAYER* player, MAPS* map);       //读取玩家的输入
+void menu();                //メニュー画面
+void runGame();             //ゲーム開始
+void moveMent(PLAYER* player, MAPS* map);       //プレイヤーの入力を読み出し
 
-void mapsPaint(MAPS* map);  //区域绘制                    
-void mapsType(MAPS* map);   //区域类型设置
-void mapsPaint1();          //关卡地图绘制
-void mapsPaint2();
-void mapsPaint3();
+void mapsPaint(MAPS* map);  //区域を描く                    
+void mapsType(MAPS* map);   //区域のタープ設定
+void mapsPaint1();          //レベル1のマップ設定
+void mapsPaint2();          //レベル2のマップ設定
+void mapsPaint3();          //レベル3のマップ設定
 
 void logs(const char* c);   //logs保存
-void logsRead();            //logs打印
+void logsRead();            //logsを出力する
 
-void room(MAPS* map);
-void shop(PLAYER* player, MAPS* map, STATUS* status);
-void healRoom(STATUS* status, MAPS* map);
-void charaRoom(PLAYER* player, MAPS* map, STATUS* status);
-void randomRoom(PLAYER* player, MAPS* map, STATUS* status);
-void enemyRoom(STATUS* enemy);
-void bossRoom(STATUS* enemy);
-void nextFloorRoom(PLAYER* player, MAPS* map, STATUS* status);
+void room(MAPS* map);       //「この区域がどのタイプ」の判定
+void shop(PLAYER* player, MAPS* map, STATUS* status);               //商店の処理
+void healRoom(STATUS* status, MAPS* map);                           //無料回復屋の処理
+void charaRoom(PLAYER* player, MAPS* map, STATUS* status);          //募集屋の処理
+void randomRoom(PLAYER* player, MAPS* map, STATUS* status);         //ランダム屋の処理
+void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy);      //敵の屋の処理
+void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy);       //bossの屋の処理
+void nextFloorRoom(PLAYER* player, MAPS* map, STATUS* status);      //階段の処理
 
-void charaInput(STATUS* status);
-void charaOutput(STATUS* status, PLAYER* player);
+void charaInput(STATUS* status);        //キャラを入力する
+void charaOutput(STATUS* status, PLAYER* player);       //キャラを出力する
 
-void battle(STATUS* status, STATUS* enemy, PLAYER* player);
-void battleS(STATUS* status, STATUS* enemy);
+void battle(STATUS* status, STATUS* enemy, PLAYER* player);     //戦闘処理1
+void battleS(STATUS* status, STATUS* enemy);                    //戦闘処理2
 
-void saveGame(PLAYER* player, MAPS* map, STATUS* status);
-void loadGame(PLAYER* player, MAPS* map, STATUS* status);
+void saveGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss);     //セーブゲーム
+void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss);     //ロードゲーム
 
-void endGame();             //结束游戏功能
+void endGame();             //ゲーム終了の処理
 
 void hideCursor();          //cursorを隠させて
 
-int main() {
-    //enemyBattle(enemy);
-    //charaInput(status);
-    //charaInput(status);
-    //charaInput(status);
-    charaInput(status);
-    charaInput(status);   
-    fopen("logs.txt", "w");
+int main() {    
     hideCursor();
     title();
 
@@ -116,6 +113,8 @@ int main() {
 
 //タイトル画面
 void title() {
+    playsound(BGM, 1);
+    fopen("logs.txt", "w");
     clrscr();
     int index = 0;
     while (1)
@@ -194,7 +193,7 @@ void title() {
                 runGame();
                 break;
             case DISP_LOAD:
-                loadGame(player, map, status);
+                loadGame(player, map, status, boss);
                 break;
             case DISP_END:
                 endGame();
@@ -206,8 +205,9 @@ void title() {
     }
 }
 
+//メニュー画面
 void menu() {
-    int index = 0;
+    int index = 0;      //0：つづく 1：セーブゲーム 2：キャラを出力する 3：ゲーム終了
     clrscr();
     while (1)
     {
@@ -313,7 +313,7 @@ void menu() {
             case 0:
                 return;
             case 1:
-                saveGame(player, map, status);
+                saveGame(player, map, status, boss);
                 break;
             case 2:
                 charaOutput(status, player);
@@ -328,11 +328,26 @@ void menu() {
     }
 }
 
+//ゲーム開始
 void runGame() {
     clrscr();
+    printf("新人か？めずらしいね...\n\n");
+    msleep(2000);
+    printf("新人はDungeonの守護者·ギルガメッシュ·ルイーダから無料なキャラを二つ与えられる...\n\n");
+    msleep(3500);
+    printf("GOOD LUCK...");
+    msleep(2000);
+    clrscr();
+    charaInput(status);
+    charaInput(status);
+    clrscr();
+
+    //初期化
     G_floor = 1;
     G_checkMapNum = 1;
-    player[0] = { 5, 9, 1, 0, 30 };
+    player[0] = { 5, 9, 1, 30 };    
+    boss[0] = {"Dungeonの守護者·ギルガメッシュ·ルイーダ", 1000, 1000, 100, 50, 10, 5, 10, 1};
+    
     mapsPaint1();
     while (1)
     {
@@ -343,12 +358,13 @@ void runGame() {
     getchar();
 }
 
+//プレイヤーの入力を読み出し
 void moveMent(PLAYER* player, MAPS* map) {
     gotoxy(player->x, player->y);
-    printf("♀");
-    //当该区域已被探索，便将其显示
+    printf("♀");    
     gotoxy(25, 2);
     printf("%d層目", G_floor);
+    //もしこの区域が探索していた、出力する
     for (int i = 0; i < MAX_MAP; i++)
     {
         if ((map + i)->isCheck == 1 || (map + i)->isCheck == 2)
@@ -362,7 +378,7 @@ void moveMent(PLAYER* player, MAPS* map) {
         reinport();
         clrscr();
     }
-    //玩家向上移动的处理
+    //プレイヤーは上に移動する処理
     if (inport(PK_UP))
     {
         for (int i = 0; i < MAX_MAP; i++)
@@ -386,7 +402,7 @@ void moveMent(PLAYER* player, MAPS* map) {
         reinport();
         clrscr();
     }
-    //玩家向下移动的处理
+    //プレイヤーは下に移動する処理
     if (inport(PK_DOWN))
     {
         for (int i = 0; i < MAX_MAP; i++)
@@ -410,7 +426,7 @@ void moveMent(PLAYER* player, MAPS* map) {
         reinport();
         clrscr();
     }
-    //玩家向左移动的处理
+    //プレイヤーは左に移動する処理
     if (inport(PK_LEFT))
     {
         for (int i = 0; i < MAX_MAP; i++)
@@ -434,7 +450,7 @@ void moveMent(PLAYER* player, MAPS* map) {
         reinport();
         clrscr();
     }
-    //玩家向右移动的处理
+    //プレイヤーは右に移動する処理
     if (inport(PK_RIGHT))
     {
         for (int i = 0; i < MAX_MAP; i++)
@@ -460,8 +476,9 @@ void moveMent(PLAYER* player, MAPS* map) {
     }
 }
 
-//区域绘制
+//区域を描く
 void mapsPaint(MAPS* map) {
+    //もしこの区域はタイプが持っていない、区域にタイプを与える
     if (map->index == 0)
     {
         mapsType(map);
@@ -536,6 +553,7 @@ void mapsPaint(MAPS* map) {
 
 }
 
+//区域のタープ設定
 void mapsType(MAPS* map)
 {
     if (G_checkMapNum == 8)
@@ -546,13 +564,14 @@ void mapsType(MAPS* map)
         }
         else
         {
+            
             map->index = 8;
         }
     }
     else
     {
         srand((unsigned int)time(NULL));
-        int a = rand() % 100;               //用于判断该区域类型
+        int a = rand() % 100;               
         if (a >= 0 && a < 30)
         {
             map->index = 1;
@@ -580,7 +599,7 @@ void mapsType(MAPS* map)
     }
 }
 
-//关卡1的地图绘制
+//レベル1のマップ設定
 void mapsPaint1() {
     gotoxy(5, 10);
     map[0] = { wherex(), wherey() - 1, 9, 1, 1, 1, 0, 1 };      //(x,y,index,isCheck,isUp,isDown,isLeft,isRight);
@@ -606,14 +625,59 @@ void mapsPaint1() {
     map[10] = { wherex(), wherey() - 1, 0, 0, 0, 0, 1, 0 };
 }
 
+//レベル2のマップ設定
 void mapsPaint2() {
-
+    gotoxy(5, 10);
+    map[0] = { wherex(), wherey() - 1, 9, 1, 0, 1, 0, 1 };      //(x,y,index,isCheck,isUp,isDown,isLeft,isRight);
+    gotoxy(5, 15);
+    map[1] = { wherex(), wherey() - 1, 0, 0, 1, 0, 0, 0 };
+    gotoxy(15, 10);
+    map[2] = { wherex(), wherey() - 1, 0, 0, 1, 0, 1, 1 };
+    gotoxy(15, 5);
+    map[3] = { wherex(), wherey() - 1, 0, 0, 0, 1, 0, 1 };
+    gotoxy(25, 5);
+    map[4] = { wherex(), wherey() - 1, 0, 0, 0, 0, 1, 0 };
+    gotoxy(25, 10);
+    map[5] = { wherex(), wherey() - 1, 0, 0, 0, 1, 1, 1 };
+    gotoxy(25, 15);
+    map[6] = { wherex(), wherey() - 1, 0, 0, 1, 1, 0, 1 };
+    gotoxy(25, 20);
+    map[7] = { wherex(), wherey() - 1, 0, 0, 1, 0, 1, 0 };
+    gotoxy(15, 20);
+    map[8] = { wherex(), wherey() - 1, 0, 0, 0, 0, 0, 1 };
+    gotoxy(35, 15);
+    map[9] = { wherex(), wherey() - 1, 0, 0, 0, 0, 1, 0 };
+    gotoxy(35, 10);
+    map[10] = { wherex(), wherey() - 1, 0, 0, 0, 0, 1, 0 };
 }
 
+//レベル3のマップ設定
 void mapsPaint3() {
-
+    gotoxy(5, 10);
+    map[0] = { wherex(), wherey() - 1, 9, 1, 0, 1, 0, 1 };      //(x,y,index,isCheck,isUp,isDown,isLeft,isRight);
+    gotoxy(5, 15);
+    map[1] = { wherex(), wherey() - 1, 0, 0, 1, 0, 0, 1 };
+    gotoxy(15, 10);
+    map[2] = { wherex(), wherey() - 1, 0, 0, 0, 1, 1, 1 };
+    gotoxy(15, 15);
+    map[3] = { wherex(), wherey() - 1, 0, 0, 1, 0, 1, 1 };
+    gotoxy(25, 15);
+    map[4] = { wherex(), wherey() - 1, 0, 0, 0, 1, 1, 0 };
+    gotoxy(25, 20);
+    map[5] = { wherex(), wherey() - 1, 0, 0, 1, 0, 0, 0 };
+    gotoxy(25, 10);
+    map[6] = { wherex(), wherey() - 1, 0, 0, 0, 0, 1, 1 };
+    gotoxy(35, 10);
+    map[7] = { wherex(), wherey() - 1, 0, 0, 1, 0, 1, 0 };
+    gotoxy(35, 5);
+    map[8] = { wherex(), wherey() - 1, 0, 0, 0, 1, 1, 0 };
+    gotoxy(25, 5);
+    map[9] = { wherex(), wherey() - 1, 0, 0, 0, 0, 1, 1 };
+    gotoxy(15, 5);
+    map[10] = { wherex(), wherey() - 1, 0, 0, 0, 0, 0, 1 };
 }
 
+//logs保存
 void logs(const char* c) {
     if (G_logs > MAX_LOGS)
     {
@@ -627,6 +691,7 @@ void logs(const char* c) {
     G_logs += 1;
 }
 
+//logsを出力する
 void logsRead() {
     for (int i = 3; i < 30; i++)
     {
@@ -653,6 +718,7 @@ void logsRead() {
     fclose(fp);
 }
 
+//「この区域がどのタイプ」の判定
 void room(MAPS* map) {
     mapsPaint(map);
     switch (map->index)
@@ -661,8 +727,8 @@ void room(MAPS* map) {
         shop(player, map, status);
         break;
     case 2:
-        logs("何もない...\n");
         msleep(1000);
+        logs("何もない...\n");       
         break;
     case 3:
         healRoom(status, map);
@@ -674,13 +740,20 @@ void room(MAPS* map) {
         randomRoom(player, map, status);
         break;
     case 6:
-        enemyRoom(enemy);
+        enemyRoom(player, map, status, enemy);
+        break;
+    case 7:
+        bossRoom(player, map, status,boss);
+        break;
+    case 8:
+        nextFloorRoom(player, map, status);
         break;
     default:
         break;
     }
 }
 
+//商店の処理
 void shop(PLAYER* player, MAPS* map, STATUS* status) {
     logs("商店を見つかりました\n");
     logsRead();
@@ -692,7 +765,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
     msleep(500);
     printf(".");
     msleep(1000);
-    int index = 0;
+    int index = 0;      //0：回復薬を買う 1：全てのキャラのhpを回復する 2：キャラを雇う 3：閉じる
     clrscr();
     while (1)
     {
@@ -727,7 +800,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
             gotoxy(50, 14);
             printf("回復(50 G)");
             gotoxy(50, 16);
-            printf("キャラを雇う(20-50 G)");
+            printf("キャラを雇う(20-45 G)");
             gotoxy(50, 18);
             printf("閉じる");
             rewind(stdin);
@@ -740,7 +813,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
             printf("回復(50 G)");
             textattr(0x0F);
             gotoxy(50, 16);
-            printf("キャラを雇う(20-50 G)");
+            printf("キャラを雇う(20-45 G)");
             gotoxy(50, 18);
             printf("閉じる");
             rewind(stdin);
@@ -753,7 +826,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
             printf("回復(50 G)");
             textattr(0x70);
             gotoxy(50, 16);
-            printf("キャラを雇う(20-50 G)");
+            printf("キャラを雇う(20-45 G)");
             textattr(0x0F);
             gotoxy(50, 18);
             printf("閉じる");
@@ -765,7 +838,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
             gotoxy(50, 14);
             printf("回復(50 G)");
             gotoxy(50, 16);
-            printf("キャラを雇う(20-50 G)");
+            printf("キャラを雇う(20-45 G)");
             textattr(0x70);
             gotoxy(50, 18);
             printf("閉じる");
@@ -850,10 +923,10 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
                     break;
                 }
             case 2:
-                if (player->gold >= 50)
+                if (player->gold >= 45)
                 {
                     srand(time(NULL));
-                    int g = rand() % 30 + 20;
+                    int g = rand() % 25 + 20;
                     player->gold -= g;
                     charaInput(status);
                     gotoxy(80, 15);
@@ -885,6 +958,7 @@ void shop(PLAYER* player, MAPS* map, STATUS* status) {
     }
 }
 
+//無料回復屋の処理
 void healRoom(STATUS* status, MAPS* map) {
     logs("無料回復屋を見つかりました\n");
     logsRead();
@@ -971,9 +1045,9 @@ void healRoom(STATUS* status, MAPS* map) {
                 for (int i = 0; i < G_status; i++)
                 {
                     (status + i)->hp = (status + i)->maxHp;
-                    if ((status + index)->isBattle == 2)
+                    if ((status + i)->isBattle == 2)
                     {
-                        (status + index)->isBattle = 0;
+                        (status + i)->isBattle = 0;
                     }                    
                 }
                 gotoxy(60, 27);
@@ -993,6 +1067,7 @@ void healRoom(STATUS* status, MAPS* map) {
 
 }
 
+//募集屋の処理
 void charaRoom(PLAYER* player, MAPS* map, STATUS* status) {
     logs("ギルガメッシュ酒場を見つかりました\n");
     logsRead();
@@ -1026,7 +1101,7 @@ void charaRoom(PLAYER* player, MAPS* map, STATUS* status) {
         gotoxy(53, 7);
         printf("雇いたいか？");
         gotoxy(46, 8);
-        printf("(一回だけ。25 Gが必要だ。)");
+        printf("(一回だけ。30 Gが必要だ。)");
         switch (index)
         {
         case 0:
@@ -1076,11 +1151,11 @@ void charaRoom(PLAYER* player, MAPS* map, STATUS* status) {
             switch (index)
             {
             case 0:
-                if (player->gold >= 25)
+                if (player->gold >= 30)
                 {
                     clrscr();
                     charaInput(status);
-                    player->gold -= 25;
+                    player->gold -= 30;
                     return;
                 }
                 else
@@ -1100,6 +1175,7 @@ void charaRoom(PLAYER* player, MAPS* map, STATUS* status) {
     }
 }
 
+//ランダム屋の処理
 void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
     logs("謎のドーアを見つかりました\n");
     logsRead();
@@ -1178,7 +1254,7 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
 
         if (inport(PK_ENTER))
         {
-            int a;
+            int a;      //0：回復 1：回復薬入手 2：ゴールド入手 3：戦闘処理 4：全体にダメージ
             int g;
             int blood;
             switch (index)
@@ -1192,6 +1268,10 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
                     for (int i = 0; i < G_status; i++)
                     {
                         (status + i)->hp = (status + i)->maxHp;
+                        if ((status + i)->isBattle == 2)
+                        {
+                            (status + i)->isBattle = 0;
+                        }
                     }
                     gotoxy(60, 27);
                     printf("全てのキャラが回復した！ENTERを押してください...");
@@ -1207,7 +1287,7 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
                     return;
                 case 2:
                     srand(time(NULL));
-                    g = rand() % 20 + 5;
+                    g = rand() % 15 + 5;
                     player->gold += g;
                     gotoxy(60, 27);
                     printf("%d Gを入手した！ENTERを押してください...",g);
@@ -1216,7 +1296,7 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
                     return;
                 case 3:
                     clrscr();
-                    enemyRoom(enemy);
+                    enemyRoom(player, map, status, enemy);
                     return;
                 case 4:
                     srand(time(NULL));
@@ -1245,307 +1325,8 @@ void randomRoom(PLAYER* player, MAPS* map, STATUS* status) {
     }
 }
 
-void charaInput(STATUS* status) {
-    clrscr();
-    while (G_status >= MAX_STATUS)
-    {
-        gotoxy(35, 10);
-        printf("あなたのキャラは多すぎる。一名を解雇してください。");
-        gotoxy(35, 12);
-        printf("ENTERを押してください...");
-        rewind(stdin);
-        getchar();
-        charaOutput(status, player);
-    }
-    int len;
-    int seedNum = 0;
-    printf("名前を入力してください>>(全角15字以内、半角英数字30字以内)");
-    rewind(stdin);
-    scanf("%s", (status + G_status)->name);
-
-    len = strlen((status + G_status)->name);
-    for (int i = 0; i < len; i++)
-    {
-        if (i % 2 == 0)
-        {
-            seedNum += *((status + G_status)->name + i);
-            seedNum /= i + 1;
-        }
-        else
-        {
-            seedNum -= *((status + G_status)->name + i);
-            seedNum *= i + 1;
-        }
-    }
-    if (seedNum < 0)
-    {
-        seedNum = (-seedNum);
-    }
-    seedNum *= 111;
-    (status + G_status)->hp = seedNum % 200 + 100;
-    (status + G_status)->atk = (seedNum / 7) % 66 + 25;
-    (status + G_status)->def = (seedNum / 3) % 30 + 10;
-    (status + G_status)->spd = (seedNum / 4) % 10;
-    (status + G_status)->eva = (seedNum / 5) % 50;
-    (status + G_status)->cri = (seedNum / 6) % 80;
-    (status + G_status)->isBattle = 0;
-    (status + G_status)->maxHp = (status + G_status)->hp;
-
-    printf("キャラ作成中.");
-    msleep(500);
-    printf(".");
-    msleep(500);
-    printf(".\n");
-    msleep(1000);
-    printf("NAME: %s\n\n", (status + G_status)->name);
-    printf("HP/MAXHP: %d/%d\n", (status + G_status)->hp, (status + G_status)->maxHp);
-    printf("ATK: %d\n", (status + G_status)->atk);
-    printf("DEF: %d\n", (status + G_status)->def);
-    printf("SPD: %d\n", (status + G_status)->spd);
-    printf("EVA: %d\n", (status + G_status)->eva);
-    printf("CRI: %d\n\n", (status + G_status)->cri);
-    printf("作成完了！ENTERを押してください...");
-    G_status += 1;
-    rewind(stdin);
-    getchar();
-}
-
-void charaOutput(STATUS* status, PLAYER* player) {
-    clrscr();
-    int index = 0;
-    int index0 = 0;
-    for (int i = 0; i < G_status; i++)
-    {
-        if ((status + i)->hp<= 0)
-        {
-            (status + i)->hp = 0;
-            (status + i)->isBattle = 2;
-        }
-        
-    }
-    while (1)
-    {
-        reinport();
-        for (int i = 3; i < 30; i++)
-        {
-            gotoxy(5, i);
-            printf("┃");
-        }
-        gotoxy(5, 2);
-        printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-        gotoxy(5, 30);
-        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-        for (int i = 3; i < 30; i++)
-        {
-            gotoxy(60, i);
-            printf("┃");
-        }
-        for (int i = 3; i < 30; i++)
-        {
-            gotoxy(115, i);
-            printf("┃");
-        }
-        gotoxy(60, 2);
-        printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-        gotoxy(60, 30);
-        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-        gotoxy(5, 1);
-        printf("お金：%d G", player->gold);
-
-        for (int i = 0; i < G_status; i++)
-        {
-            if (i == index)
-            {
-                textattr(0x70);
-            }
-            gotoxy(7, i + 3);
-            printf("%d.%s", i + 1, (status + i)->name);
-            textattr(0x0F);
-        }
-        switch (index0)
-        {
-        case 0:
-            gotoxy(65, 20);
-            textattr(0x70);
-            printf("回復薬を使う");
-            textattr(0x0F);
-            gotoxy(85, 20);
-            printf("出戦");
-            gotoxy(95, 20);
-            printf("解雇");
-            gotoxy(65, 21);
-            printf("(残りは：%d)", player->potionNum);
-            gotoxy(83, 21);
-            if ((status + index)->isBattle == 0)
-            {
-                printf("(休憩中)");
-            }
-            if ((status + index)->isBattle == 1)
-            {
-                printf("(出戦中)");
-            }
-            if ((status + index)->isBattle == 2)
-            {
-                printf("(戦闘不能)");
-            }
-            break;
-        case 1:
-            gotoxy(65, 20);            
-            printf("回復薬を使う");           
-            textattr(0x70);
-            gotoxy(85, 20);           
-            printf("出戦");
-            textattr(0x0F);
-            gotoxy(95, 20);
-            printf("解雇");
-            gotoxy(65, 21);
-            printf("(残りは：%d)", player->potionNum);
-            gotoxy(83, 21);
-            if ((status + index)->isBattle == 0)
-            {
-                printf("(休憩中)");
-            }
-            if ((status + index)->isBattle == 1)
-            {
-                printf("(出戦中)");
-            }
-            if ((status + index)->isBattle == 2)
-            {
-                printf("(戦闘不能)");
-            }
-            break;
-        case 2:
-            gotoxy(65, 20);
-            printf("回復薬を使う");            
-            gotoxy(85, 20);                        
-            printf("出戦");
-            textattr(0x70);
-            gotoxy(95, 20);
-            printf("解雇");
-            textattr(0x0F);
-            gotoxy(65, 21);
-            printf("(残りは：%d)", player->potionNum);
-            gotoxy(83, 21);
-            if ((status + index)->isBattle == 0)
-            {
-                printf("(休憩中)");
-            }
-            if ((status + index)->isBattle == 1)
-            {
-                printf("(出戦中)");
-            }
-            if ((status + index)->isBattle == 2)
-            {
-                printf("(戦闘不能)");
-            }
-            break;
-        default:
-            break;
-        }
-        if (inport(PK_UP))
-        {
-            index--;
-            if (index < 0)
-            {
-                index = G_status - 1;
-            }
-            reinport();
-            clrscr();
-        }
-        if (inport(PK_DOWN))
-        {
-            index++;
-            if (index > G_status - 1)
-            {
-                index = 0;
-            }
-            reinport();
-            clrscr();
-        }
-        if (inport(PK_LEFT))
-        {
-            index0--;
-            if (index0 < 0)
-            {
-                index0 = 2;
-            }
-            reinport();
-            clrscr();
-        }
-        if (inport(PK_RIGHT))
-        {
-            index0++;
-            if (index0 > 2)
-            {
-                index0 = 0;
-            }
-            reinport();
-            clrscr();
-        }
-        if (inport(PK_ENTER))
-        {
-            switch (index0)
-            {
-            case 0:
-                if ((status + index)->hp == (status + index)->maxHp)
-                {
-                    gotoxy(62, 23);
-                    printf("回復薬を使う必要はない！ENTERを押してください...");
-                    rewind(stdin);
-                    getchar();
-                }
-                else
-                {
-                    (status + index)->hp = (status + index)->maxHp;                    
-                    player->potionNum -= 1;
-                    (status + index)->isBattle = 0;
-                }
-                break;
-            case 1:
-                if ((status + index)->isBattle == 0)
-                {
-                    for (int i = 0; i < G_status; i++)
-                    {
-                        (status + i)->isBattle = 0;
-                    }
-                    (status + index)->isBattle = 1;
-                }                
-                break;
-            case 2:
-                for (int i = index; i < G_status; i++)
-                {
-                    *(status + i) = *(status + i + 1);
-                }
-                G_status -= 1; 
-                break;
-            default:
-                break;
-            }          
-            reinport();
-            clrscr();
-        }
-        if (inport(PK_ESC))
-        {
-            reinport();
-            clrscr();
-            return;
-        }
-        gotoxy(65, 4);
-        printf("HP/MAXHP: %d/%d\n", (status + index)->hp, (status + index)->maxHp);
-        gotoxy(65, 6);
-        printf("ATK: %d\n", (status + index)->atk);
-        gotoxy(65, 8);
-        printf("DEF: %d\n", (status + index)->def);
-        gotoxy(65, 10);
-        printf("SPD: %d\n", (status + index)->spd);
-        gotoxy(65, 12);
-        printf("EVA: %d\n", (status + index)->eva);
-        gotoxy(65, 14);
-        printf("CRI: %d\n\n", (status + index)->cri);
-    }
-}
-
-void enemyRoom(STATUS* enemy) {
+//敵の屋の処理
+void enemyRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
     logs("なんか変な息がある\n");
     logsRead();
     gotoxy(wherex(), wherey());
@@ -1557,13 +1338,15 @@ void enemyRoom(STATUS* enemy) {
     printf(".");
     msleep(1000);
     clrscr();
-    int index = 0;
-    char KATAGANA[512][10] = { "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ラ", "リ", "ル", "レ", "ロ", "ワ", "ヲ", "ン", "ガ", "ギ", "グ", "ゲ", "ゴ", "ザ", "ジ", "ズ", "ゼ", "ゾ", "ダ", "ジ", "ヅ", "デ", "ド", "バ","ビ", "ブ", "ベ", "ボ", "パ", "ピ", "プ", "ペ", "ポ" };
+    int index = 0;      //0：戦う 1：状況確認 2：逃げる
+    char KATAGANA[512][3] = { "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ラ", "リ", "ル", "レ", "ロ", "ワ", "ヲ", "ン", "ガ", "ギ", "グ", "ゲ", "ゴ", "ザ", "ジ", "ズ", "ゼ", "ゾ", "ダ", "ジ", "ヅ", "デ", "ド", "バ","ビ", "ブ", "ベ", "ボ", "パ", "ピ", "プ", "ペ", "ポ" };
     srand(time(NULL));
     int num = rand() % 10 + 1;
+    strcpy(enemy->name, "");
+    //カタカナの敵名をランダムに生成する
     for (int i = 0; i < num; i++)
     {
-        int roll = rand() % 77;
+        int roll = rand() % 71;
         char a[3];
         strcpy(a, KATAGANA[roll]);
         strcat(enemy->name, a);
@@ -1594,9 +1377,10 @@ void enemyRoom(STATUS* enemy) {
     enemy->atk = (seedNum / 7) % 66 + 25;
     enemy->def = (seedNum / 3) % 30 + 10;
     enemy->spd = (seedNum / 4) % 10;
-    enemy->eva = (seedNum / 5) % 50;
+    enemy->eva = (seedNum / 5) % 40;
     enemy->cri = (seedNum / 6) % 80;
     enemy->maxHp = enemy->hp;
+
     while (1)
     {
         reinport();
@@ -1615,7 +1399,10 @@ void enemyRoom(STATUS* enemy) {
         gotoxy(1, 30);
         printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
         gotoxy(2, 3);
-        printf("あ！やせいの %s ", enemy->name);
+        printf("あ！やせいの  ");
+        textattr(0x0A);
+        printf("%s ", enemy->name);
+        textattr(0x0F);
         gotoxy(2, 4);
         printf("がとびだしてきた！");
         gotoxy(3, 6);
@@ -1655,9 +1442,13 @@ void enemyRoom(STATUS* enemy) {
             }
             if (j == G_status)
             {
+                stopsound(BGM);
+                closesound(BGM);
+                playsound(DEAD, 0);
                 clrscr();
                 gotoxy(55, 15);
                 printf("GAME OVER");
+                G_status = 0;
                 getchar();
                 clrscr();
                 title();
@@ -1727,6 +1518,8 @@ void enemyRoom(STATUS* enemy) {
 
         if (inport(PK_ENTER))
         {
+            srand(time(NULL));
+            int s = rand() % G_status;
             switch (index)
             {
             case 0:
@@ -1742,6 +1535,15 @@ void enemyRoom(STATUS* enemy) {
                     int g = rand() % 20 + 1;
                     player->gold += g;
                 }
+                if ((status + s)->hp <= enemy->atk && (status + s)->hp != 0)
+                {
+                    (status + s)->hp = 1;
+                }
+                else
+                {
+                    (status + rand() % G_status)->hp -= enemy->atk;
+                }                
+                logs("逃げた...痛い...\n");
                 clrscr();
                 return;
             default:
@@ -1752,7 +1554,7 @@ void enemyRoom(STATUS* enemy) {
         if (enemy->hp == 0)
         {
             srand(time(NULL));
-            int g = rand() % 30 + 10;
+            int g = rand() % 15 + 5;
             player->gold += g;
             clrscr();
             while (1)
@@ -1870,6 +1672,729 @@ void enemyRoom(STATUS* enemy) {
     }
 }
 
+//bossの屋の処理
+void bossRoom(PLAYER* player, MAPS* map, STATUS* status, STATUS* enemy) {
+    logs("このところは、危険な息がある\n");
+    textattr(0x0C);
+    logsRead();
+    gotoxy(wherex(), wherey());
+    msleep(500);
+    printf(".");
+    msleep(500);
+    printf(".");
+    msleep(500);
+    printf(".");
+    textattr(0x0F);
+    msleep(1000);
+    clrscr();
+    int index = 0;
+    while (1)
+    {
+        reinport();
+        for (int i = 3; i < 30; i++)
+        {
+            gotoxy(1, i);
+            printf("┃");
+        }
+        for (int i = 3; i < 30; i++)
+        {
+            gotoxy(56, i);
+            printf("┃");
+        }
+        gotoxy(1, 2);
+        printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        gotoxy(1, 30);
+        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+        gotoxy(2, 3);
+        printf("%s ", boss->name);
+        gotoxy(3, 6);
+        printf("HP/MAXHP: %d/%d\n", boss->hp, boss->maxHp);
+        gotoxy(3, 7);
+        printf("ATK: %d\n", boss->atk);
+        gotoxy(3, 8);
+        printf("DEF: %d\n", boss->def);
+        gotoxy(3, 9);
+        printf("SPD: %d\n", boss->spd);
+        gotoxy(3, 10);
+        printf("EVA: %d\n", boss->eva);
+        gotoxy(3, 11);
+        printf("CRI: %d\n\n", boss->cri);
+        gotoxy(2, 15);
+        printf("ここに来たのは、よくできた...");
+        for (int i = 10; i < 25; i++)
+        {
+            gotoxy(70, i);
+            printf("┃");
+        }
+        for (int i = 10; i < 25; i++)
+        {
+            gotoxy(110, i);
+            printf("┃");
+        }
+        gotoxy(70, 9);
+        printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        gotoxy(70, 25);
+        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+        
+        int j = 0;
+        for (int i = 0; i < G_status; i++)
+        {
+            if ((status + i)->hp == 0)
+            {
+                j++;
+            }
+            if (j == G_status)
+            {
+                stopsound(BGM);
+                closesound(BGM);
+                playsound(DEAD, 0);
+                clrscr();
+                gotoxy(45, 15);
+                printf("君、もっと強くなければならない！");
+                getchar();
+                clrscr();
+                for (int k = 0; k < G_status; k++)
+                {
+                    (status + k)->hp = (status + k)->maxHp;
+                }
+                boss->hp = boss->maxHp;
+                G_floor = 1;
+                mapsPaint1();
+                player->x = 5;
+                player->y = 9;
+                G_checkMapNum = 1;                
+                clrscr();
+                return;
+            }
+        }
+        gotoxy(87, 12);
+        printf("どうする？");
+        switch (index)
+        {
+        case 0:
+            gotoxy(87, 15);
+            textattr(0x70);
+            printf("たたかう");
+            textattr(0x0F);
+            gotoxy(84, 17);
+            printf("状況を確認する");
+            gotoxy(88, 19);
+            printf("にげる");
+            rewind(stdin);
+            break;
+        case 1:
+            gotoxy(87, 15);
+            printf("たたかう");
+            textattr(0x70);
+            gotoxy(84, 17);
+            printf("状況を確認する");
+            textattr(0x0F);
+            gotoxy(88, 19);
+            printf("にげる");
+            rewind(stdin);
+            break;
+        case 2:
+            gotoxy(87, 15);
+            printf("たたかう");
+            gotoxy(84, 17);
+            printf("状況を確認する");
+            textattr(0x70);
+            gotoxy(88, 19);
+            printf("にげる");
+            textattr(0x0F);
+            rewind(stdin);
+            break;
+        default:
+            break;
+        }
+        if (inport(PK_UP))
+        {
+            index--;
+            if (index < 0)
+            {
+                index = 2;
+            }
+            reinport();
+            clrscr();
+        }
+        if (inport(PK_DOWN))
+        {
+            index++;
+            if (index > 2)
+            {
+                index = 0;
+            }
+            reinport();
+            clrscr();
+        }
+
+        if (inport(PK_ENTER))
+        {
+            switch (index)
+            {
+            case 0:
+                battle(status, boss, player);
+                break;
+            case 1:
+                charaOutput(status, player);
+                break;
+            case 2:
+                map->isCheck = 2;
+                clrscr();
+                return;
+            default:
+                break;
+            }
+        }
+        if (boss->hp == 0)
+        {
+            clrscr();
+            if (G_status != MAX_STATUS)
+            {
+                strcpy((status + G_status)->name, boss->name);
+                (status + G_status)->hp = 1;
+                (status + G_status)->atk = boss->atk;
+                (status + G_status)->def = boss->def;
+                (status + G_status)->spd = boss->spd;
+                (status + G_status)->eva = boss->eva;
+                (status + G_status)->cri = boss->cri;
+                (status + G_status)->isBattle = 0;
+                (status + G_status)->maxHp = boss->maxHp;
+                G_status += 1;
+            }
+            else
+            {
+                boss->hp = boss->maxHp;
+            }
+            gotoxy(55, 15);
+            printf("よく...");
+            msleep(500);
+            printf("で");
+            msleep(500);
+            printf("き");
+            msleep(500);
+            printf("た");
+            msleep(1000);
+            rewind(stdin);           
+            getchar();
+            clrscr();
+            G_floor = 1;
+            mapsPaint1();
+            player->x = 5;
+            player->y = 9;
+            G_checkMapNum = 1;
+            clrscr();
+            return;
+        }
+    }
+
+}
+
+//階段の処理
+void nextFloorRoom(PLAYER* player, MAPS* map, STATUS* status) {
+    logs("階段を見つかりました\n");
+    logsRead();
+    gotoxy(wherex(), wherey());
+    msleep(500);
+    printf(".");
+    msleep(500);
+    printf(".");
+    msleep(500);
+    printf(".");
+    msleep(1000);
+    int index = 0;
+    clrscr();
+    while (1)
+    {
+        reinport();
+        for (int i = 6; i < 25; i++)
+        {
+            gotoxy(45, i);
+            printf("┃");
+        }
+        for (int i = 6; i < 25; i++)
+        {
+            gotoxy(72, i);
+            printf("┃");
+        }
+        gotoxy(45, 5);
+        printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        gotoxy(45, 25);
+        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+        gotoxy(53, 7);
+        printf("階段を上るか？");
+        gotoxy(54, 8);
+        printf("(戻る不可)");
+        gotoxy(51, 10);
+        printf("(戦闘不能のキャラは");
+        gotoxy(52, 11);
+        printf("チームから退出）");
+        switch (index)
+        {
+        case 0:
+            gotoxy(53, 16);
+            textattr(0x70);
+            printf("はい");
+            textattr(0x0F);
+            gotoxy(53, 18);
+            printf("いいえ");
+            rewind(stdin);
+            break;
+        case 1:
+            gotoxy(53, 16);
+            printf("はい");
+            gotoxy(53, 18);
+            textattr(0x70);
+            printf("いいえ");
+            textattr(0x0F);
+            rewind(stdin);
+            break;
+        default:
+            break;
+        }
+        if (inport(PK_UP))
+        {
+            index--;
+            if (index < 0)
+            {
+                index = 1;
+            }
+            reinport();
+            clrscr();
+        }
+        if (inport(PK_DOWN))
+        {
+            index++;
+            if (index > 1)
+            {
+                index = 0;
+            }
+            reinport();
+            clrscr();
+        }
+
+        if (inport(PK_ENTER))
+        {
+            switch (index)
+            {
+            case 0:
+                reinport();
+                clrscr();
+                for (int i = 0; i < G_status; i++)
+                {
+                    if ((status + i)->isBattle == 2 || (status + i)->hp == 0)
+                    {
+                        for (int j = i; j < G_status - 1; j++)
+                        {
+                            strcpy((status + j)->name, (status + j + 1)->name);
+                            (status + j)->hp = (status + j + 1)->hp;
+                            (status + j)->atk = (status + j + 1)->atk;
+                            (status + j)->def = (status + j + 1)->def;
+                            (status + j)->spd = (status + j + 1)->spd;
+                            (status + j)->eva = (status + j + 1)->eva;
+                            (status + j)->cri = (status + j + 1)->cri;
+                            (status + j)->isBattle = (status + j + 1)->isBattle;
+                            (status + j)->maxHp = (status + j + 1)->maxHp;
+                        }
+                        G_status -= 1;
+                        i -= 1;
+                    }
+                }
+
+                G_floor++;
+                switch (G_floor)
+                {
+                case 1:
+                    mapsPaint1();
+                    break;
+                case 2:
+                    mapsPaint2();
+                    break;
+                case 3:
+                    mapsPaint3();
+                    break;
+                default:
+                    break;
+                }               
+                player->x = 5;
+                player->y = 9;
+                G_checkMapNum = 1;
+                return;
+            case 1:
+                clrscr();
+                map->isCheck = 2;
+                return;
+            default:
+                break;
+            }
+        }
+    }
+}
+
+//キャラを入力する
+void charaInput(STATUS* status) {
+    clrscr();
+    while (G_status >= MAX_STATUS)
+    {
+        gotoxy(35, 10);
+        printf("あなたのキャラは多すぎる。一名を解雇してください。");
+        gotoxy(35, 12);
+        printf("ENTERを押してください...");
+        rewind(stdin);
+        getchar();
+        charaOutput(status, player);
+    }
+    int len;
+    int seedNum = 0;
+    int cmp;
+    do
+    {   
+        cmp = 0;
+        clrscr();
+        gotoxy(1, 1);
+        printf("キャラの名前を入力してください>>(全角32字以内、半角英数字64字以内)");
+        rewind(stdin);
+        scanf("%s", (status + G_status)->name);
+        for (int i = 0; i < G_status; i++)
+        {
+            if (strcmp((status + G_status)->name, (status + i)->name) == 0)
+            {
+                cmp = 1;
+                printf("\n%sはもう君のチームにいる", (status + G_status)->name);
+                rewind(stdin);
+                getchar();
+            }
+        }
+        
+    } while (cmp == 1);
+    
+    if (strcmp((status + G_status)->name, "Dungeonの守護者·ギルガメッシュ·ルイーダ") == 0)
+    {
+        printf("残念...これはダメだ\n");
+        strcat((status + G_status)->name, "(偽)");
+        (status + G_status)->hp = 100;
+        (status + G_status)->atk = 20;
+        (status + G_status)->def = 10;
+        (status + G_status)->spd = 0;
+        (status + G_status)->eva = 0;
+        (status + G_status)->cri = 0;
+        (status + G_status)->isBattle = 0;
+        (status + G_status)->maxHp = (status + G_status)->hp;
+
+    }
+    else if (strcmp((status + G_status)->name, "CHLOE") == 0)
+    {
+        printf("\n隠されたキャラを手に入れたおめでとう...\n");
+        (status + G_status)->hp = 299;
+        (status + G_status)->atk = 99;
+        (status + G_status)->def = 39;
+        (status + G_status)->spd = 9;
+        (status + G_status)->eva = 39;
+        (status + G_status)->cri = 99;
+        (status + G_status)->isBattle = 0;
+        (status + G_status)->maxHp = (status + G_status)->hp;
+    }
+    else
+    {
+        len = strlen((status + G_status)->name);
+        for (int i = 0; i < len; i++)
+        {
+            if (i % 2 == 0)
+            {
+                seedNum += *((status + G_status)->name + i);
+                seedNum /= i + 1;
+            }
+            else
+            {
+                seedNum -= *((status + G_status)->name + i);
+                seedNum *= i + 1;
+            }
+        }
+        if (seedNum < 0)
+        {
+            seedNum = (-seedNum);
+        }
+        seedNum *= 111;
+        (status + G_status)->hp = seedNum % 200 + 100;
+        (status + G_status)->atk = (seedNum / 7) % 66 + 25;
+        (status + G_status)->def = (seedNum / 3) % 35 + 5;
+        (status + G_status)->spd = (seedNum / 4) % 10;
+        (status + G_status)->eva = (seedNum / 9) % 40;
+        (status + G_status)->cri = (seedNum / 6) % 80;
+        (status + G_status)->isBattle = 0;
+        (status + G_status)->maxHp = (status + G_status)->hp;
+    }
+    printf("キャラ作成中.");
+    msleep(500);
+    printf(".");
+    msleep(500);
+    printf(".\n");
+    msleep(1000);
+    printf("NAME: %s\n\n", (status + G_status)->name);
+    printf("HP/MAXHP: %d/%d\n", (status + G_status)->hp, (status + G_status)->maxHp);
+    printf("ATK: %d\n", (status + G_status)->atk);
+    printf("DEF: %d\n", (status + G_status)->def);
+    printf("SPD: %d\n", (status + G_status)->spd);
+    printf("EVA: %d\n", (status + G_status)->eva);
+    printf("CRI: %d\n\n", (status + G_status)->cri);
+    printf("作成完了！ENTERを押してください...");
+    G_status += 1;
+    rewind(stdin);
+    getchar();
+}
+
+//キャラを出力する
+void charaOutput(STATUS* status, PLAYER* player) {
+    clrscr();
+    int index = 0;
+    int index0 = 0;
+    for (int i = 0; i < G_status; i++)
+    {
+        if ((status + i)->hp <= 0)
+        {
+            (status + i)->hp = 0;
+            (status + i)->isBattle = 2;
+        }
+
+    }
+    while (1)
+    {
+        reinport();
+        for (int i = 3; i < 30; i++)
+        {
+            gotoxy(5, i);
+            printf("┃");
+        }
+        gotoxy(5, 2);
+        printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        gotoxy(5, 30);
+        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+        for (int i = 3; i < 30; i++)
+        {
+            gotoxy(60, i);
+            printf("┃");
+        }
+        for (int i = 3; i < 30; i++)
+        {
+            gotoxy(115, i);
+            printf("┃");
+        }
+        gotoxy(60, 2);
+        printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        gotoxy(60, 30);
+        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+        gotoxy(5, 1);
+        printf("お金：%d G", player->gold);
+
+        for (int i = 0; i < G_status; i++)
+        {
+            if (i == index)
+            {
+                textattr(0x70);
+            }
+            gotoxy(7, i + 3);
+            printf("%d.%s", i + 1, (status + i)->name);
+            textattr(0x0F);
+        }
+        switch (index0)
+        {
+        case 0:
+            gotoxy(65, 20);
+            textattr(0x70);
+            printf("回復薬を使う");
+            textattr(0x0F);
+            gotoxy(85, 20);
+            printf("出戦");
+            gotoxy(95, 20);
+            printf("解雇");
+            gotoxy(65, 21);
+            printf("(残りは：%d)", player->potionNum);
+            gotoxy(83, 21);
+            if ((status + index)->isBattle == 0)
+            {
+                printf("(休憩中)");
+            }
+            if ((status + index)->isBattle == 1)
+            {
+                printf("(出戦中)");
+            }
+            if ((status + index)->isBattle == 2)
+            {
+                printf("(戦闘不能)");
+            }
+            break;
+        case 1:
+            gotoxy(65, 20);
+            printf("回復薬を使う");
+            textattr(0x70);
+            gotoxy(85, 20);
+            printf("出戦");
+            textattr(0x0F);
+            gotoxy(95, 20);
+            printf("解雇");
+            gotoxy(65, 21);
+            printf("(残りは：%d)", player->potionNum);
+            gotoxy(83, 21);
+            if ((status + index)->isBattle == 0)
+            {
+                printf("(休憩中)");
+            }
+            if ((status + index)->isBattle == 1)
+            {
+                printf("(出戦中)");
+            }
+            if ((status + index)->isBattle == 2)
+            {
+                printf("(戦闘不能)");
+            }
+            break;
+        case 2:
+            gotoxy(65, 20);
+            printf("回復薬を使う");
+            gotoxy(85, 20);
+            printf("出戦");
+            textattr(0x70);
+            gotoxy(95, 20);
+            printf("解雇");
+            textattr(0x0F);
+            gotoxy(65, 21);
+            printf("(残りは：%d)", player->potionNum);
+            gotoxy(83, 21);
+            if ((status + index)->isBattle == 0)
+            {
+                printf("(休憩中)");
+            }
+            if ((status + index)->isBattle == 1)
+            {
+                printf("(出戦中)");
+            }
+            if ((status + index)->isBattle == 2)
+            {
+                printf("(戦闘不能)");
+            }
+            break;
+        default:
+            break;
+        }
+        if (inport(PK_UP))
+        {
+            index--;
+            if (index < 0)
+            {
+                index = G_status - 1;
+            }
+            reinport();
+            clrscr();
+        }
+        if (inport(PK_DOWN))
+        {
+            index++;
+            if (index > G_status - 1)
+            {
+                index = 0;
+            }
+            reinport();
+            clrscr();
+        }
+        if (inport(PK_LEFT))
+        {
+            index0--;
+            if (index0 < 0)
+            {
+                index0 = 2;
+            }
+            reinport();
+            clrscr();
+        }
+        if (inport(PK_RIGHT))
+        {
+            index0++;
+            if (index0 > 2)
+            {
+                index0 = 0;
+            }
+            reinport();
+            clrscr();
+        }
+        if (inport(PK_ENTER))
+        {
+            switch (index0)
+            {
+            case 0:
+                if ((status + index)->hp == (status + index)->maxHp)
+                {
+                    gotoxy(62, 23);
+                    printf("回復薬を使う必要はない！ENTERを押してください...");
+                    rewind(stdin);
+                    getchar();
+                }
+                else if (player->potionNum == 0) 
+                {
+                    gotoxy(62, 23);
+                    printf("回復薬がない！ENTERを押してください...");
+                    rewind(stdin);
+                    getchar();
+                }
+                else
+                {
+                    (status + index)->hp = (status + index)->maxHp;
+                    player->potionNum -= 1;
+                    (status + index)->isBattle = 0;
+                }
+                break;
+            case 1:
+                if ((status + index)->isBattle == 0)
+                {
+                    for (int i = 0; i < G_status; i++)
+                    {
+                        (status + i)->isBattle = 0;
+                    }
+                    (status + index)->isBattle = 1;
+                }
+                break;
+            case 2:
+                if (G_status == 1)
+                {
+                    gotoxy(62, 23);
+                    printf("だめ！ENTERを押してください...");
+                    rewind(stdin);
+                    getchar();
+                    break;
+                }
+                for (int i = index; i < G_status; i++)
+                {
+                    *(status + i) = *(status + i + 1);
+                }
+                G_status -= 1;
+                break;
+            default:
+                break;
+            }
+            reinport();
+            clrscr();
+        }
+        if (inport(PK_ESC))
+        {
+            reinport();
+            clrscr();
+            return;
+        }
+        gotoxy(65, 4);
+        printf("HP/MAXHP: %d/%d\n", (status + index)->hp, (status + index)->maxHp);
+        gotoxy(65, 6);
+        printf("ATK: %d\n", (status + index)->atk);
+        gotoxy(65, 8);
+        printf("DEF: %d\n", (status + index)->def);
+        gotoxy(65, 10);
+        printf("SPD: %d\n", (status + index)->spd);
+        gotoxy(65, 12);
+        printf("EVA: %d\n", (status + index)->eva);
+        gotoxy(65, 14);
+        printf("CRI: %d\n\n", (status + index)->cri);
+    }
+}
+
+//戦闘処理1
 void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
     int t = 0;
     for (int i = 0; i < G_status; i++)
@@ -1898,11 +2423,12 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
         while (1)
         {
             battleS(status + t, enemy);
-            msleep(2000);
+            msleep(2500);
             if ((status + t)->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
                 printf("戦闘失敗...ENTERを押してください...");
+                (status + t)->isBattle = 2;
                 rewind(stdin);
                 getchar();
                 clrscr();
@@ -1918,11 +2444,12 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
                 return;
             }
             battleS(enemy, status + t);
-            msleep(2000);
+            msleep(2500);
             if ((status + t)->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
                 printf("戦闘失敗...ENTERを押してください...");
+                (status + t)->isBattle = 2;
                 rewind(stdin);
                 getchar();
                 clrscr();
@@ -1946,11 +2473,12 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
         while (1)
         {
             battleS(enemy, status + t);            
-            msleep(2000);
+            msleep(2500);
             if ((status + t)->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
                 printf("戦闘失敗...ENTERを押してください...");
+                (status + t)->isBattle = 2;
                 rewind(stdin);
                 getchar();
                 clrscr();
@@ -1966,11 +2494,12 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
                 return;
             }
             battleS(status + t, enemy);
-            msleep(2000);
+            msleep(2500);
             if ((status + t)->hp == 0)
             {
                 gotoxy(31, wherey() + 2);
                 printf("戦闘失敗...ENTERを押してください...");
+                (status + t)->isBattle = 2;
                 rewind(stdin);
                 getchar();
                 clrscr();
@@ -1989,6 +2518,7 @@ void battle(STATUS* status, STATUS* enemy, PLAYER* player) {
     }
 }
 
+//戦闘処理2
 void battleS(STATUS* status, STATUS* enemy) {
     srand(time(NULL));
     gotoxy(31, wherey() + 1);
@@ -2000,6 +2530,7 @@ void battleS(STATUS* status, STATUS* enemy) {
     }
     else 
     {
+        srand(time(NULL));
         if (rand() % 100 < status->cri)
         {
             int damage = (status->atk) * 2 - (enemy->def);
@@ -2046,7 +2577,8 @@ void battleS(STATUS* status, STATUS* enemy) {
 
 }
 
-void saveGame(PLAYER* player, MAPS* map, STATUS* status) {
+//セーブゲーム
+void saveGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
     unsigned char status_count = G_status;
     FILE* fp = fopen("charaters.bin", "wb");
     fwrite(&status_count, sizeof(status_count), 1, fp);
@@ -2064,8 +2596,12 @@ void saveGame(PLAYER* player, MAPS* map, STATUS* status) {
     unsigned char map_count = G_checkMapNum;
     FILE* fp3 = fopen("maps.bin", "wb");
     fwrite(&map_count, sizeof(map_count), 1, fp3);
-    fwrite(map, sizeof(*map), map_count, fp3);
+    fwrite(map, sizeof(*map), MAX_MAP, fp3);
     fclose(fp3);
+
+    FILE* fp4 = fopen("boss.bin", "wb");
+    fwrite(boss, sizeof(*boss), 1, fp4);
+    fclose(fp4);
 
     gotoxy(60, 27);
     printf("保存中");
@@ -2082,13 +2618,16 @@ void saveGame(PLAYER* player, MAPS* map, STATUS* status) {
     clrscr();
 }
 
-void loadGame(PLAYER* player, MAPS* map, STATUS* status) {
+//ロードゲーム
+void loadGame(PLAYER* player, MAPS* map, STATUS* status, STATUS* boss) {
+    fopen("logs.txt", "w");
     unsigned char status_count = G_status;
     FILE* fp = fopen("charaters.bin", "rb");
     if (fp == NULL)
     {
         gotoxy(70, 17);
         printf("（アーカイブがありません。）\n");
+        return;
     }
     else
     {
@@ -2123,10 +2662,13 @@ void loadGame(PLAYER* player, MAPS* map, STATUS* status) {
     {
     case 1:
         mapsPaint1();
+        break;
     case 2:
         mapsPaint2();
+        break;
     case 3:
         mapsPaint3();
+        break;
     default:
         break;
     }
@@ -2135,16 +2677,28 @@ void loadGame(PLAYER* player, MAPS* map, STATUS* status) {
     FILE* fp3 = fopen("maps.bin", "rb");
     if (fp3 == NULL)
     {
-        printf("maps.binがありません。\n");
-        return;
+        //printf("maps.binがありません。\n");
+        //return;
     }
     else
     {
         fread(&map_count, sizeof(map_count), 1, fp3);
-        fread(map, sizeof(*map), map_count, fp3);
+        fread(map, sizeof(*map), MAX_MAP, fp3);        
         G_checkMapNum = map_count;
         fclose(fp3);
     }
+
+    FILE* fp4 = fopen("boss.bin", "rb");
+    if (fp4 == NULL)
+    {
+        
+    }
+    else
+    {
+        fread(boss, sizeof(*boss), 1, fp4);
+        fclose(fp4);
+    }
+
     clrscr();
     while (1)
     {
@@ -2155,6 +2709,7 @@ void loadGame(PLAYER* player, MAPS* map, STATUS* status) {
     getchar();
 }
 
+//ゲーム終了の処理
 void endGame() {
     clrscr();
     int index = 0;
